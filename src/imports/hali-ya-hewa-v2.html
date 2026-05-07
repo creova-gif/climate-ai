@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hali ya Hewa v2 — Climate Advisory Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Sans:ital,wght@0,300;0,400;0,500;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F2F0EB;--surface:#FFF;--s2:#F8F6F1;--s3:#F0EDE6;
+  --border:#E2DDD6;--border2:#CEC7BC;
+  --ink:#1A1714;--ink2:#4A443D;--ink3:#8A837A;--ink4:#B8B0A6;
+  --green:#1F6B3E;--gl:#E8F5EE;--gm:#3A9E62;--gd:#145228;
+  --amber:#B8660A;--al:#FEF3E3;--am:#D4820F;
+  --red:#C0392B;--rl:#FDECEA;
+  --blue:#1A5280;--bl:#E8F0F8;--bm:#2E86C1;
+  --sans:'Plus Jakarta Sans',sans-serif;
+  --noto:'Noto Sans',sans-serif;
+  --mono:'Space Mono',monospace;
+  --r:12px;--rs:8px;--rx:16px;
+  --sh:0 1px 3px rgba(26,23,20,.08),0 4px 16px rgba(26,23,20,.04);
+  --shl:0 4px 24px rgba(26,23,20,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);font-family:var(--sans);font-size:13px;color:var(--ink);display:flex;height:100vh}
+
+/* ── SIDEBAR ── */
+.sb{width:224px;min-width:224px;background:var(--ink);display:flex;flex-direction:column;overflow:hidden;position:relative}
+.sb::after{content:'';position:absolute;bottom:0;left:0;right:0;height:160px;background:linear-gradient(to top,rgba(31,107,62,.18),transparent);pointer-events:none}
+.sb-logo{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.08)}
+.logo-row{display:flex;align-items:center;gap:9px;margin-bottom:2px}
+.logo-ico{width:30px;height:30px;border-radius:7px;background:var(--gm);display:flex;align-items:center;justify-content:center;font-size:15px}
+.logo-name{font-size:14px;font-weight:800;color:#fff;letter-spacing:-.01em}
+.logo-sub{font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.3);letter-spacing:.12em;text-transform:uppercase;padding-left:39px}
+.nav{padding:10px 8px;flex:1;overflow-y:auto}
+.nav-lbl{font-family:var(--mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.22);padding:10px 8px 4px}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 8px;border-radius:var(--rs);cursor:pointer;color:rgba(255,255,255,.5);font-size:12px;font-weight:500;transition:all .15s;border:none;background:none;width:100%;text-align:left;margin-bottom:1px}
+.ni:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.82)}
+.ni.on{background:rgba(58,158,98,.22);color:#fff}
+.ni.on .ni-ico{color:var(--gm)}
+.ni-ico{font-size:14px;width:17px;text-align:center;flex-shrink:0}
+.ni-bdg{margin-left:auto;font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px;background:var(--gm);color:#fff}
+.ni-bdg.r{background:var(--red)}
+.ni-bdg.b{background:var(--bm)}
+.sb-foot{padding:10px 8px;border-top:1px solid rgba(255,255,255,.08);position:relative;z-index:1}
+.season-box{background:rgba(58,158,98,.12);border:1px solid rgba(58,158,98,.22);border-radius:var(--rs);padding:8px 10px}
+.sb-lbl{font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:2px}
+.sb-val{font-size:11px;font-weight:600;color:rgba(255,255,255,.78)}
+.sb-sub{font-size:10px;color:rgba(255,255,255,.35);margin-top:1px}
+
+/* ── MAIN ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 22px;display:flex;align-items:center;gap:12px;height:52px;flex-shrink:0}
+.tb-title{font-size:14px;font-weight:700;flex:1}
+.tb-sub{font-size:11px;color:var(--ink3)}
+.spill{display:flex;align-items:center;gap:5px;background:var(--s2);border:1px solid var(--border);border-radius:20px;padding:4px 11px;font-size:11px;font-weight:600;color:var(--ink2);white-space:nowrap}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.dg{background:var(--gm)}.da{background:#F5A623}.dr{background:var(--red)}.db{background:var(--bm)}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border-radius:var(--rs);font-family:var(--sans);font-size:12px;font-weight:600;cursor:pointer;border:none;transition:all .15s;white-space:nowrap}
+.bp{background:var(--green);color:#fff}.bp:hover{background:var(--gd)}
+.bs{background:var(--s2);border:1px solid var(--border);color:var(--ink2)}.bs:hover{border-color:var(--border2);background:#eee}
+.ba{background:var(--amber);color:#fff}.ba:hover{opacity:.9}
+.bb{background:var(--bm);color:#fff}.bb:hover{background:var(--blue)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+/* ── CONTENT ── */
+.content{flex:1;overflow-y:auto;padding:18px 22px;display:flex;flex-direction:column;gap:14px}
+.content.hidden{display:none}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* ── PANELS & CARDS ── */
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.ph{padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);gap:10px}
+.ph-t{font-size:13px;font-weight:700;flex:1}
+.pb{padding:16px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+
+/* ── KPIs ── */
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.kpi.g::before{background:var(--gm)}.kpi.a::before{background:#F5A623}.kpi.r::before{background:var(--red)}.kpi.b::before{background:var(--bm)}
+.kpi-l{font-size:11px;color:var(--ink3);margin-bottom:5px;font-weight:500}
+.kpi-v{font-size:24px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:3px;letter-spacing:-.02em}
+.kpi-d{font-size:11px}
+.up{color:var(--green)}.dn{color:var(--red)}.flat{color:var(--ink3)}
+
+/* ── ZONE CARDS ── */
+.zone-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px;cursor:pointer;transition:all .2s;position:relative}
+.zone-card:hover{border-color:var(--border2);box-shadow:var(--sh);transform:translateY(-1px)}
+.zone-card.sel{border-color:var(--gm);box-shadow:0 0 0 3px rgba(58,158,98,.12)}
+.zn{font-size:15px;font-weight:800;margin-bottom:1px}
+.zr{font-size:11px;color:var(--ink3);margin-bottom:10px}
+.zrb{height:4px;border-radius:2px;background:var(--s2);margin-bottom:7px;overflow:hidden}
+.zrf{height:100%;border-radius:2px;transition:width .8s ease}
+.zh{background:linear-gradient(90deg,#F5A623,var(--red))}
+.zm{background:linear-gradient(90deg,#F5A623,#E8A000)}
+.zl{background:var(--gm)}
+.zmeta{display:flex;justify-content:space-between;align-items:center;font-size:11px}
+.zbdg{font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:4px}
+.bdg-d{background:var(--al);color:var(--amber);border:1px solid rgba(184,102,10,.2)}
+.bdg-f{background:var(--bl);color:var(--blue);border:1px solid rgba(26,82,128,.2)}
+.bdg-ok{background:var(--gl);color:var(--green);border:1px solid rgba(31,107,62,.2)}
+
+/* ── ALERTS ── */
+.af{display:flex;flex-direction:column;gap:7px}
+.ai{display:flex;gap:9px;align-items:flex-start;padding:9px 12px;border-radius:var(--rs);border:1px solid}
+.ai.drought{background:var(--al);border-color:rgba(184,102,10,.2)}
+.ai.flood{background:var(--bl);border-color:rgba(26,82,128,.2)}
+.ai.ok{background:var(--gl);border-color:rgba(31,107,62,.2)}
+.ai-ico{font-size:15px;flex-shrink:0}
+.ai-t{font-size:12px;font-weight:700;margin-bottom:1px}
+.ai-d{font-size:11px;color:var(--ink2);line-height:1.5}
+.ai-time{font-family:var(--mono);font-size:9px;color:var(--ink3);flex-shrink:0;padding-top:2px}
+
+/* ── FORM ELEMENTS ── */
+.fg{display:flex;flex-direction:column;gap:4px}
+.fl{font-size:11px;font-weight:600;color:var(--ink2)}
+.fi,.fs,.fta{border:1px solid var(--border);border-radius:var(--rs);padding:8px 11px;font-family:var(--sans);font-size:13px;color:var(--ink);background:var(--surface);outline:none;transition:border-color .15s;width:100%}
+.fi:focus,.fs:focus,.fta:focus{border-color:var(--gm)}
+.fta{font-family:var(--noto);font-size:12px;resize:vertical;min-height:70px}
+.radio-group{display:flex;gap:8px;flex-wrap:wrap}
+.radio-opt{display:flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--border);border-radius:20px;cursor:pointer;font-size:12px;font-weight:500;transition:all .15s}
+.radio-opt.sel{background:var(--gl);border-color:rgba(31,107,62,.3);color:var(--green)}
+.radio-opt input{display:none}
+
+/* ── TABLES ── */
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);background:var(--s2)}
+.tbl td{padding:9px 12px;border-bottom:1px solid var(--border);color:var(--ink2);vertical-align:middle}
+.tbl td:first-child{color:var(--ink);font-weight:600}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:var(--s2)}
+
+/* ── PROGRESS ── */
+.prog{height:4px;background:var(--s2);border-radius:2px;overflow:hidden}
+.pf{height:100%;border-radius:2px;transition:width .3s}
+.pf-g{background:var(--gm)}.pf-b{background:var(--bm)}.pf-a{background:#F5A623}
+
+/* ── MODALS ── */
+.mo{position:fixed;inset:0;background:rgba(26,23,20,.5);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;z-index:200;opacity:0;pointer-events:none;transition:opacity .2s}
+.mo.open{opacity:1;pointer-events:all}
+.md{background:var(--surface);border-radius:var(--rx);box-shadow:var(--shl);padding:22px;max-width:520px;width:92%;transform:scale(.96);transition:transform .2s;max-height:90vh;overflow-y:auto}
+.mo.open .md{transform:scale(1)}
+.md-t{font-size:16px;font-weight:800;margin-bottom:3px}
+.md-s{font-size:12px;color:var(--ink3);margin-bottom:16px}
+
+/* ── ADVISORY ENGINE ── */
+.ae-layout{display:grid;grid-template-columns:280px 1fr;gap:14px}
+.ae-out{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);display:flex;flex-direction:column}
+.ae-hd{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px}
+.ae-tag{font-family:var(--mono);font-size:9px;padding:2px 8px;border-radius:4px}
+.tag-rdy{background:var(--gl);color:var(--green);border:1px solid rgba(31,107,62,.15)}
+.tag-gen{background:var(--al);color:var(--amber);border:1px solid rgba(184,102,10,.15)}
+.ae-body{padding:16px;flex:1;display:flex;flex-direction:column;gap:12px;min-height:480px}
+.lt{display:flex;gap:3px;background:var(--s2);border:1px solid var(--border);border-radius:7px;padding:2px}
+.lt-b{padding:4px 13px;border-radius:5px;border:none;font-family:var(--sans);font-size:11px;font-weight:600;cursor:pointer;color:var(--ink3);background:none;transition:all .15s}
+.lt-b.on{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.atb{background:var(--s2);border:1px solid var(--border);border-radius:var(--rs);padding:14px;font-family:var(--noto);font-size:14px;line-height:1.8;color:var(--ink);min-height:100px;position:relative}
+.sc{display:inline-block;width:2px;height:15px;background:var(--gm);animation:blink 1s infinite;vertical-align:text-bottom;margin-left:1px}
+@keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+.ch-prev{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ch-card{border:1px solid var(--border);border-radius:var(--rs);overflow:hidden}
+.ch-hd{display:flex;align-items:center;gap:7px;padding:7px 11px;background:var(--s2);border-bottom:1px solid var(--border);font-size:11px;font-weight:700}
+.ch-body{padding:10px}
+.wa-bub{background:#DCF8C6;border-radius:10px 10px 0 10px;padding:9px 11px;font-family:var(--noto);font-size:12px;line-height:1.6;color:#1a1a1a;box-shadow:0 1px 2px rgba(0,0,0,.1)}
+.wa-t{font-size:10px;color:#8B9;text-align:right;margin-top:3px}
+.sms-bub{background:#E8E8E8;border-radius:10px 10px 10px 0;padding:9px 11px;font-family:var(--noto);font-size:11px;line-height:1.5;color:#1a1a1a}
+.sms-ct{font-family:var(--mono);font-size:9px;color:var(--ink3);text-align:right;margin-top:3px}
+.ussd-scr{background:#1C1C1C;border-radius:7px;padding:12px;font-family:var(--mono);font-size:10px;color:#4AFF8A;line-height:1.65}
+
+/* ── CHARTS (pure CSS + SVG) ── */
+.chart-wrap{position:relative;width:100%}
+
+/* ── CLIMATE LEDGER ── */
+.obs-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.obs-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:12px}
+.obs-f{font-size:12px;font-weight:700;margin-bottom:2px}
+.obs-m{font-size:10px;color:var(--ink3);margin-bottom:8px;font-family:var(--mono)}
+.obs-met{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.obs-mi{background:var(--s2);border-radius:6px;padding:7px}
+.obs-ml{font-size:9px;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:1px}
+.obs-mv{font-size:13px;font-weight:700}
+
+/* ── FARMER MOBILE SIMULATOR ── */
+.phone-frame{width:300px;background:#1A1A1A;border-radius:36px;padding:12px;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative;margin:0 auto}
+.phone-screen{background:#E8E0D4;border-radius:26px;overflow:hidden;min-height:520px;display:flex;flex-direction:column}
+.wa-header{background:#075E54;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.wa-avatar{width:34px;height:34px;border-radius:50%;background:var(--gm);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.wa-contact{flex:1}
+.wa-cname{color:#fff;font-size:13px;font-weight:600}
+.wa-status{color:rgba(255,255,255,.6);font-size:11px}
+.wa-msgs{flex:1;padding:10px;display:flex;flex-direction:column;gap:8px;overflow-y:auto;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cpath d='M0 0h100v100H0z' fill='%23E8E0D4'/%3E%3C/svg%3E")}
+.wa-msg{max-width:82%;font-family:var(--noto);font-size:12px;line-height:1.55}
+.wa-msg.in{background:#fff;border-radius:0 10px 10px 10px;padding:7px 10px;align-self:flex-start;box-shadow:0 1px 1px rgba(0,0,0,.1)}
+.wa-msg.out{background:#DCF8C6;border-radius:10px 0 10px 10px;padding:7px 10px;align-self:flex-end;box-shadow:0 1px 1px rgba(0,0,0,.1)}
+.wa-msg-time{font-size:10px;color:#8B9;text-align:right;margin-top:2px}
+.wa-input-row{background:#F0F0F0;padding:8px 10px;display:flex;align-items:center;gap:8px;border-top:1px solid #ddd}
+.wa-input{flex:1;background:#fff;border-radius:20px;padding:7px 12px;font-size:12px;color:#666;border:none;font-family:var(--noto)}
+.wa-send{width:32px;height:32px;background:var(--gm);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;border:none;font-size:14px}
+
+/* ── HISTORY ── */
+.hist-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:12px 14px;cursor:pointer;transition:all .15s}
+.hist-item:hover{border-color:var(--border2);box-shadow:var(--sh)}
+.hi-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px}
+.hi-name{font-size:13px;font-weight:700}
+.hi-meta{font-family:var(--mono);font-size:9px;color:var(--ink3)}
+.hi-text{font-family:var(--noto);font-size:12px;color:var(--ink2);line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.hi-footer{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.tag-sm{font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:4px}
+
+/* ── GRANT EXPORT PAGE ── */
+.grant-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.gs-head{padding:12px 16px;background:linear-gradient(135deg,var(--green),var(--gm));color:#fff;display:flex;align-items:center;justify-content:space-between}
+.gs-title{font-size:13px;font-weight:700}
+.gs-body{padding:16px}
+.stat-highlight{text-align:center;padding:16px;background:var(--gl);border-radius:var(--rs);border:1px solid rgba(31,107,62,.15)}
+.sh-num{font-size:28px;font-weight:800;color:var(--green);letter-spacing:-.02em;line-height:1}
+.sh-label{font-size:11px;color:var(--ink3);margin-top:3px}
+
+/* ENROLL FORM inside modal */
+.enroll-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* Toast */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--ink);color:#fff;padding:10px 18px;border-radius:var(--rs);font-size:12px;font-weight:600;z-index:999;opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none}
+.toast.show{opacity:1;transform:translateY(0)}
+
+/* Chip/tag styles */
+.chip{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:600;border:1px solid}
+.chip-g{background:var(--gl);color:var(--green);border-color:rgba(31,107,62,.2)}
+.chip-a{background:var(--al);color:var(--amber);border-color:rgba(184,102,10,.2)}
+.chip-b{background:var(--bl);color:var(--blue);border-color:rgba(26,82,128,.2)}
+.chip-r{background:var(--rl);color:var(--red);border-color:rgba(192,57,43,.2)}
+
+/* Section label */
+.sec-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px}
+
+/* Animate in */
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.fadein{animation:fadeUp .35s ease both}
+
+@media(max-width:900px){
+  .g4,.kpi-row{grid-template-columns:1fr 1fr}
+  .g3,.g2{grid-template-columns:1fr}
+  .ae-layout{grid-template-columns:1fr}
+  .ch-prev{grid-template-columns:1fr}
+  .enroll-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sb">
+  <div class="sb-logo">
+    <div class="logo-row">
+      <div class="logo-ico">🌦</div>
+      <div class="logo-name">Hali ya Hewa</div>
+    </div>
+    <div class="logo-sub">Climate Advisory · v2</div>
+  </div>
+  <nav class="nav">
+    <div class="nav-lbl">Core</div>
+    <button class="ni on" onclick="go('overview',this)"><span class="ni-ico">📊</span>Overview</button>
+    <button class="ni" onclick="go('advisory',this)"><span class="ni-ico">🤖</span>Advisory Engine<span class="ni-bdg">3</span></button>
+    <button class="ni" onclick="go('simulator',this)"><span class="ni-ico">📱</span>WhatsApp Sim</button>
+    <button class="ni" onclick="go('history',this)"><span class="ni-ico">🗂</span>Advisory History</button>
+    <div class="nav-lbl">Farmers</div>
+    <button class="ni" onclick="go('farmers',this)"><span class="ni-ico">👨‍🌾</span>Farmer Registry</button>
+    <button class="ni" onclick="go('ledger',this)"><span class="ni-ico">📡</span>Climate Ledger<span class="ni-bdg b">8</span></button>
+    <button class="ni" onclick="go('zones',this)"><span class="ni-ico">🗺</span>Zone Analytics</button>
+    <div class="nav-lbl">Operations</div>
+    <button class="ni" onclick="go('delivery',this)"><span class="ni-ico">📨</span>Delivery</button>
+    <button class="ni" onclick="go('alerts',this)"><span class="ni-ico">🔔</span>Alerts<span class="ni-bdg r">2</span></button>
+    <button class="ni" onclick="go('grant',this)"><span class="ni-ico">📄</span>Grant Export</button>
+  </nav>
+  <div class="sb-foot">
+    <div class="season-box">
+      <div class="sb-lbl">Active Season</div>
+      <div class="sb-val">Masika 2026</div>
+      <div class="sb-sub">La Niña weak · IOD Neutral</div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div>
+      <div class="tb-title" id="pg-title">Platform Overview</div>
+      <div class="tb-sub">Tanzania · ICPAC Masika 2026 · 3 Zones Active</div>
+    </div>
+    <div class="spill"><span class="dot dg"></span>3 Zones</div>
+    <div class="spill"><span class="dot da"></span>2 Alerts</div>
+    <div class="spill"><span class="dot dg"></span>1,000 Farmers</div>
+    <button class="btn bp" onclick="openModal('send-modal')">📤 Send Advisory</button>
+    <button class="btn bs" onclick="openModal('enroll-modal')">+ Enroll Farmer</button>
+  </div>
+
+  <!-- ═══ OVERVIEW ═══ -->
+  <div class="content fadein" id="pg-overview">
+    <div class="g4 kpi-row">
+      <div class="kpi g"><div class="kpi-l">Registered Farmers</div><div class="kpi-v">1,000</div><div class="kpi-d up">↑ 312 this month</div></div>
+      <div class="kpi a"><div class="kpi-l">Active Drought Alerts</div><div class="kpi-v">2</div><div class="kpi-d up">Dodoma + Singida</div></div>
+      <div class="kpi b"><div class="kpi-l">Advisories Sent</div><div class="kpi-v">4,782</div><div class="kpi-d up">↑ 18% vs last season</div></div>
+      <div class="kpi g"><div class="kpi-l">Avg Open Rate</div><div class="kpi-v">84%</div><div class="kpi-d up">↑ 6pts vs SMS-only</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 280px;gap:14px">
+      <div class="panel">
+        <div class="ph"><span class="ph-t">🗺 Agroecological Zones — Tanzania Masika 2026</span><span style="font-family:var(--mono);font-size:10px;color:var(--ink3)">ICPAC Forecast</span></div>
+        <div class="pb">
+          <div class="g3">
+            <div class="zone-card sel" onclick="selZone(this,'dodoma')">
+              <div class="zn">Dodoma</div><div class="zr">Central · 312 farmers</div>
+              <div class="zrb"><div class="zrf zh" style="width:82%"></div></div>
+              <div class="zmeta"><span style="font-size:11px;color:var(--ink2)">🔥 82% drought risk</span><span class="zbdg bdg-d">Drought Alert</span></div>
+            </div>
+            <div class="zone-card" onclick="selZone(this,'morogoro')">
+              <div class="zn">Morogoro</div><div class="zr">Eastern · 287 farmers</div>
+              <div class="zrb"><div class="zrf zm" style="width:71%"></div></div>
+              <div class="zmeta"><span style="font-size:11px;color:var(--ink2)">🌊 71% flood risk</span><span class="zbdg bdg-f">Flood Watch</span></div>
+            </div>
+            <div class="zone-card" onclick="selZone(this,'arusha')">
+              <div class="zn">Arusha</div><div class="zr">Northern · 401 farmers</div>
+              <div class="zrb"><div class="zrf zl" style="width:45%"></div></div>
+              <div class="zmeta"><span style="font-size:11px;color:var(--ink2)">✅ Near normal</span><span class="zbdg bdg-ok">Low Risk</span></div>
+            </div>
+          </div>
+          <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+            <div class="sec-lbl">Delivery This Season</div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+              <div><div style="font-size:11px;color:var(--ink3);margin-bottom:4px">WhatsApp</div><div style="font-size:18px;font-weight:800">3,241</div><div class="prog" style="margin-top:5px"><div class="pf pf-g" style="width:84%"></div></div><div style="font-size:10px;color:var(--ink3);margin-top:3px">84% open rate</div></div>
+              <div><div style="font-size:11px;color:var(--ink3);margin-bottom:4px">SMS</div><div style="font-size:18px;font-weight:800">1,141</div><div class="prog" style="margin-top:5px"><div class="pf pf-b" style="width:71%"></div></div><div style="font-size:10px;color:var(--ink3);margin-top:3px">71% receipt</div></div>
+              <div><div style="font-size:11px;color:var(--ink3);margin-bottom:4px">USSD Sessions</div><div style="font-size:18px;font-weight:800">400</div><div class="prog" style="margin-top:5px"><div class="pf pf-a" style="width:62%"></div></div><div style="font-size:10px;color:var(--ink3);margin-top:3px">62% completion</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel" style="height:fit-content">
+        <div class="ph"><span class="ph-t">⚡ Live Alerts</span></div>
+        <div class="pb" style="padding:10px"><div class="af">
+          <div class="ai drought"><span class="ai-ico">🔥</span><div class="ai-content"><div class="ai-t">Dodoma — Critical</div><div class="ai-d">72% drought probability. 312 farmers. Advisory pending.</div></div><span class="ai-time">2h</span></div>
+          <div class="ai flood"><span class="ai-ico">🌊</span><div class="ai-content"><div class="ai-t">Morogoro — Flood Watch</div><div class="ai-d">Above-normal rains. Drainage advisory needed.</div></div><span class="ai-time">6h</span></div>
+          <div class="ai ok"><span class="ai-ico">✅</span><div class="ai-content"><div class="ai-t">Arusha — Normal Season</div><div class="ai-d">Standard advisory sent to 401 farmers.</div></div><span class="ai-time">1d</span></div>
+        </div></div>
+      </div>
+    </div>
+    <!-- MINI CHART — SVG Rainfall Trend -->
+    <div class="panel">
+      <div class="ph"><span class="ph-t">📈 Seasonal Rainfall Trend — Dodoma vs Historical Average</span><span style="font-size:11px;color:var(--ink3)">mm/month · 2026</span></div>
+      <div class="pb">
+        <svg viewBox="0 0 600 120" style="width:100%;height:auto" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="grd-hist" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3A9E62" stop-opacity=".15"/><stop offset="100%" stop-color="#3A9E62" stop-opacity="0"/></linearGradient>
+            <linearGradient id="grd-curr" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#C0392B" stop-opacity=".12"/><stop offset="100%" stop-color="#C0392B" stop-opacity="0"/></linearGradient>
+          </defs>
+          <!-- Grid lines -->
+          <line x1="40" y1="10" x2="40" y2="100" stroke="#E2DDD6" stroke-width="1"/>
+          <line x1="40" y1="100" x2="590" y2="100" stroke="#E2DDD6" stroke-width="1"/>
+          <line x1="40" y1="60" x2="590" y2="60" stroke="#E2DDD6" stroke-width=".5" stroke-dasharray="3,3"/>
+          <line x1="40" y1="30" x2="590" y2="30" stroke="#E2DDD6" stroke-width=".5" stroke-dasharray="3,3"/>
+          <!-- Labels -->
+          <text x="30" y="103" font-size="8" fill="#8A837A" text-anchor="end" font-family="Space Mono">0</text>
+          <text x="30" y="63" font-size="8" fill="#8A837A" text-anchor="end" font-family="Space Mono">50</text>
+          <text x="30" y="33" font-size="8" fill="#8A837A" text-anchor="end" font-family="Space Mono">90</text>
+          <!-- Month labels -->
+          <text x="80" y="112" font-size="8" fill="#8A837A" text-anchor="middle" font-family="Space Mono">Jan</text>
+          <text x="167" y="112" font-size="8" fill="#8A837A" text-anchor="middle" font-family="Space Mono">Feb</text>
+          <text x="254" y="112" font-size="8" fill="#8A837A" text-anchor="middle" font-family="Space Mono">Mar</text>
+          <text x="341" y="112" font-size="8" fill="#8A837A" text-anchor="middle" font-family="Space Mono">Apr</text>
+          <text x="428" y="112" font-size="8" fill="#8A837A" text-anchor="middle" font-family="Space Mono">May</text>
+          <text x="515" y="112" font-size="8" fill="#8A837A" text-anchor="middle" font-family="Space Mono">Jun</text>
+          <!-- Historical avg line (green) -->
+          <polyline points="80,72 167,55 254,38 341,45 428,68 515,90" fill="none" stroke="#3A9E62" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <polygon points="80,72 167,55 254,38 341,45 428,68 515,90 515,100 80,100" fill="url(#grd-hist)"/>
+          <!-- Current 2026 (red - below average) -->
+          <polyline points="80,80 167,72 254,62 341,58 428,82 515,100" fill="none" stroke="#C0392B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4,2"/>
+          <polygon points="80,80 167,72 254,62 341,58 428,82 515,100 515,100 80,100" fill="url(#grd-curr)"/>
+          <!-- Data points -->
+          <circle cx="80" cy="72" r="3" fill="#3A9E62"/>
+          <circle cx="167" cy="55" r="3" fill="#3A9E62"/>
+          <circle cx="254" cy="38" r="3" fill="#3A9E62"/>
+          <circle cx="341" cy="45" r="3" fill="#3A9E62"/>
+          <circle cx="80" cy="80" r="3" fill="#C0392B"/>
+          <circle cx="167" cy="72" r="3" fill="#C0392B"/>
+          <circle cx="254" cy="62" r="3" fill="#C0392B"/>
+          <circle cx="341" cy="58" r="3" fill="#C0392B"/>
+          <!-- Legend -->
+          <line x1="420" y1="15" x2="440" y2="15" stroke="#3A9E62" stroke-width="2"/>
+          <text x="444" y="18" font-size="9" fill="#4A443D" font-family="Plus Jakarta Sans">Historical avg</text>
+          <line x1="420" y1="28" x2="440" y2="28" stroke="#C0392B" stroke-width="2" stroke-dasharray="4,2"/>
+          <text x="444" y="31" font-size="9" fill="#4A443D" font-family="Plus Jakarta Sans">2026 (–32%)</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ ADVISORY ENGINE ═══ -->
+  <div class="content hidden fadein" id="pg-advisory">
+    <div style="font-size:12px;color:var(--ink3);background:var(--gl);border:1px solid rgba(31,107,62,.2);border-radius:var(--rs);padding:9px 13px">🤖 <strong>Advisory Engine</strong> — Claude AI + ICPAC forecast data. Generate Swahili advisories with real-time streaming, preview across all delivery channels.</div>
+    <div class="ae-layout">
+      <!-- CONFIG -->
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="panel">
+          <div class="ph"><span class="ph-t">⚙️ Configuration</span></div>
+          <div class="pb" style="display:flex;flex-direction:column;gap:10px">
+            <div class="fg"><label class="fl">Zone</label>
+              <select class="fs" id="z-sel" onchange="updFD()">
+                <option value="dodoma">Dodoma — Central (Drought Alert)</option>
+                <option value="morogoro">Morogoro — Eastern (Flood Watch)</option>
+                <option value="arusha">Arusha — Northern (Normal)</option>
+              </select>
+            </div>
+            <div class="fg"><label class="fl">Primary Crop</label>
+              <select class="fs" id="c-sel">
+                <option value="sorghum">Mtama (Sorghum)</option>
+                <option value="maize">Mahindi (Maize)</option>
+                <option value="cassava">Muhogo (Cassava)</option>
+                <option value="beans">Maharagwe (Beans)</option>
+                <option value="millet">Uwele (Millet)</option>
+                <option value="groundnuts">Karanga (Groundnuts)</option>
+                <option value="rice">Mpunga (Rice)</option>
+              </select>
+            </div>
+            <div class="fg"><label class="fl">Advisory Type</label>
+              <select class="fs" id="at-sel">
+                <option value="planting">Planting Advisory</option>
+                <option value="water">Water Management</option>
+                <option value="pest">Pest Alert</option>
+                <option value="harvest">Harvest Timing</option>
+                <option value="emergency">Emergency Alert</option>
+              </select>
+            </div>
+            <div class="fg"><label class="fl">Custom Context</label>
+              <textarea class="fta" id="ctx" placeholder="Local observations, recent events..."></textarea>
+            </div>
+            <button class="btn bp" id="gen-btn" onclick="genAdvisory()" style="width:100%;justify-content:center">✨ Generate Advisory</button>
+          </div>
+        </div>
+        <!-- ICPAC Data Box -->
+        <div style="background:var(--s2);border:1px solid var(--border);border-radius:var(--rs);padding:11px">
+          <div class="sec-lbl">ICPAC Forecast Data</div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:var(--ink3)">Season</span><span style="font-family:var(--mono);font-size:10px;font-weight:600">Masika 2026</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:var(--ink3)">Zone Outlook</span><span id="fd-out" style="font-family:var(--mono);font-size:10px;font-weight:600;color:var(--amber)">Below Normal</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:var(--ink3)">Probability</span><span id="fd-prob" style="font-family:var(--mono);font-size:10px;font-weight:600">72%</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:var(--ink3)">Confidence</span><span id="fd-conf" style="font-family:var(--mono);font-size:10px;font-weight:600">High</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:var(--ink3)">ENSO</span><span style="font-family:var(--mono);font-size:10px">La Niña weak</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OUTPUT -->
+      <div class="ae-out">
+        <div class="ae-hd">
+          <span style="font-size:13px;font-weight:700;flex:1">Generated Advisory</span>
+          <span class="ae-tag tag-rdy" id="ae-tag">Ready</span>
+          <div class="lt"><button class="lt-b on" id="lb-sw" onclick="swLang('sw')">Swahili</button><button class="lt-b" id="lb-en" onclick="swLang('en')">English</button></div>
+        </div>
+        <div class="ae-body">
+          <div>
+            <div class="sec-lbl">ADVISORY TEXT</div>
+            <div class="atb" id="adv-box"><span style="color:var(--ink3);font-style:italic;font-size:13px">Select a zone and crop above, then generate your advisory. It will appear here in Swahili, with English translation available.</span></div>
+          </div>
+          <div id="act-sec" style="display:none">
+            <div class="sec-lbl">KEY ACTIONS</div>
+            <div id="act-list" style="display:flex;flex-direction:column;gap:5px"></div>
+          </div>
+          <div id="ch-sec" style="display:none">
+            <div class="sec-lbl">CHANNEL PREVIEWS</div>
+            <div class="ch-prev">
+              <div class="ch-card"><div class="ch-hd"><span>💬</span>WhatsApp</div><div class="ch-body"><div class="wa-bub" id="wa-prev">—</div><div class="wa-t">✓✓ Delivered</div></div></div>
+              <div class="ch-card"><div class="ch-hd"><span>📱</span>SMS</div><div class="ch-body"><div class="sms-bub" id="sms-prev">—</div><div class="sms-ct" id="sms-ct">0/160</div></div></div>
+              <div class="ch-card" style="grid-column:span 2"><div class="ch-hd"><span>📟</span>USSD Menu</div><div class="ch-body"><div class="ussd-scr" id="ussd-prev">CON Hali ya Hewa<br>Karibu / Welcome<br><br>1. Ushauri wa kilimo<br>2. Hali ya hewa<br>0. Ondoka</div></div></div>
+            </div>
+            <div style="display:flex;gap:7px;margin-top:10px">
+              <button class="btn bp" onclick="openModal('send-modal')" style="flex:1;justify-content:center">📤 Send to Zone</button>
+              <button class="btn bs" onclick="saveAdv()">💾 Save</button>
+              <button class="btn bs" onclick="copyAdv()">📋 Copy</button>
+            </div>
+          </div>
+          <div id="adv-empty" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--ink3)">
+            <div style="font-size:32px;opacity:.4">🌦</div>
+            <div style="font-size:13px">AI-generated Swahili advisory appears here</div>
+            <div style="font-size:11px">Grounded in live ICPAC seasonal forecast data</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ WHATSAPP SIMULATOR ═══ -->
+  <div class="content hidden fadein" id="pg-simulator">
+    <div style="display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="panel">
+          <div class="ph"><span class="ph-t">📱 WhatsApp Conversation Simulator</span></div>
+          <div class="pb">
+            <p style="font-size:12px;color:var(--ink3);margin-bottom:14px">Simulate the full two-way WhatsApp conversation between Hali ya Hewa and a registered farmer. This is what your farmers actually experience.</p>
+            <div class="fg" style="margin-bottom:10px"><label class="fl">Select Farmer</label>
+              <select class="fs" id="sim-farmer" onchange="loadSimFarmer()">
+                <option value="amina">Amina Juma — Dodoma — Sorghum</option>
+                <option value="hassan">Hassan Mkwawa — Dodoma — Millet</option>
+                <option value="fatuma">Fatuma Ally — Morogoro — Rice</option>
+                <option value="mwanajuma">Mwanajuma Haji — Arusha — Maize</option>
+              </select>
+            </div>
+            <div style="display:flex;gap:8px">
+              <button class="btn bp" onclick="startSim()">▶ Run Simulation</button>
+              <button class="btn bs" onclick="resetSim()">↺ Reset</button>
+            </div>
+            <div style="margin-top:16px;padding:12px;background:var(--s2);border-radius:var(--rs);border:1px solid var(--border)">
+              <div class="sec-lbl" style="margin-bottom:8px">How It Works</div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;gap:9px;font-size:12px"><span style="background:var(--gm);color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">1</span><div>Farmer enrolls via USSD or WhatsApp by sending their name, zone, and crop</div></div>
+                <div style="display:flex;gap:9px;font-size:12px"><span style="background:var(--gm);color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">2</span><div>System sends weekly ICPAC-grounded advisory in Swahili every Monday morning</div></div>
+                <div style="display:flex;gap:9px;font-size:12px"><span style="background:var(--gm);color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">3</span><div>Farmer can reply with questions or observations — AI responds in Swahili</div></div>
+                <div style="display:flex;gap:9px;font-size:12px"><span style="background:var(--gm);color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">4</span><div>Observations logged to Climate Ledger — building your ground-truth dataset</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- PHONE FRAME -->
+      <div>
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="wa-header">
+              <div class="wa-avatar">🌦</div>
+              <div class="wa-contact">
+                <div class="wa-cname">Hali ya Hewa</div>
+                <div class="wa-status" id="wa-status">Online</div>
+              </div>
+            </div>
+            <div class="wa-msgs" id="wa-msgs">
+              <div class="wa-msg in">
+                Habari! Karibu kwenye Hali ya Hewa. Tuma jina lako, wilaya, na zao lako kujisajili. 🌱
+                <div class="wa-msg-time">08:00</div>
+              </div>
+            </div>
+            <div class="wa-input-row">
+              <div class="wa-input" id="wa-input-disp">Andika ujumbe...</div>
+              <button class="wa-send" onclick="sendSimMsg()">➤</button>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center;margin-top:10px;font-size:11px;color:var(--ink3)">Simulated WhatsApp View · Farmer's Phone</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ ADVISORY HISTORY ═══ -->
+  <div class="content hidden fadein" id="pg-history">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+      <input type="text" class="fi" placeholder="Search advisories..." style="max-width:280px">
+      <select class="fs" style="max-width:160px"><option>All Zones</option><option>Dodoma</option><option>Morogoro</option><option>Arusha</option></select>
+      <select class="fs" style="max-width:160px"><option>All Types</option><option>Planting</option><option>Drought Alert</option><option>Flood Warning</option></select>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px" id="hist-list">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+
+  <!-- ═══ FARMERS ═══ -->
+  <div class="content hidden fadein" id="pg-farmers">
+    <div class="g4 kpi-row">
+      <div class="kpi g"><div class="kpi-l">Total Registered</div><div class="kpi-v">1,000</div><div class="kpi-d up">↑ 312 this month</div></div>
+      <div class="kpi b"><div class="kpi-l">WhatsApp Users</div><div class="kpi-v">680</div><div class="kpi-d flat">68% of farmers</div></div>
+      <div class="kpi a"><div class="kpi-l">SMS Users</div><div class="kpi-v">220</div><div class="kpi-d flat">22% of farmers</div></div>
+      <div class="kpi g"><div class="kpi-l">USSD Users</div><div class="kpi-v">100</div><div class="kpi-d flat">Feature phones</div></div>
+    </div>
+    <div class="panel">
+      <div class="ph">
+        <span class="ph-t">👨‍🌾 Farmer Registry</span>
+        <div style="display:flex;gap:7px">
+          <input type="text" class="fi" placeholder="Search name or phone..." style="width:200px;padding:6px 11px">
+          <button class="btn bp" onclick="openModal('enroll-modal')">+ Enroll Farmer</button>
+        </div>
+      </div>
+      <div style="padding:0">
+        <table class="tbl">
+          <thead><tr><th>Name</th><th>Zone</th><th>Phone</th><th>Crops</th><th>Channel</th><th>Enrolled</th><th>Last Advisory</th><th>Observations</th></tr></thead>
+          <tbody id="farm-tb"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CLIMATE LEDGER ═══ -->
+  <div class="content hidden fadein" id="pg-ledger">
+    <div class="g4 kpi-row">
+      <div class="kpi b"><div class="kpi-l">Total Observations</div><div class="kpi-v">2,847</div><div class="kpi-d up">↑ 312 this week</div></div>
+      <div class="kpi g"><div class="kpi-l">Active Reporters</div><div class="kpi-v">634</div><div class="kpi-d flat">63% of farmers</div></div>
+      <div class="kpi a"><div class="kpi-l">Drought Signals</div><div class="kpi-v">189</div><div class="kpi-d dn">↑ Dodoma zone</div></div>
+      <div class="kpi g"><div class="kpi-l">Accuracy vs Satellite</div><div class="kpi-v">87%</div><div class="kpi-d up">Validated by Amini API</div></div>
+    </div>
+    <!-- Rainfall report chart -->
+    <div class="panel">
+      <div class="ph"><span class="ph-t">📊 Farmer Rainfall Reports — This Week by Zone</span></div>
+      <div class="pb">
+        <svg viewBox="0 0 600 100" style="width:100%;height:auto" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="bar-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3A9E62" stop-opacity=".9"/><stop offset="100%" stop-color="#1F6B3E" stop-opacity=".7"/></linearGradient></defs>
+          <!-- Bars — Dodoma (drought, low) -->
+          <rect x="50" y="65" width="30" height="25" fill="#C0392B" rx="3" opacity=".8"/>
+          <rect x="85" y="60" width="30" height="30" fill="#C0392B" rx="3" opacity=".6"/>
+          <rect x="120" y="70" width="30" height="20" fill="#C0392B" rx="3" opacity=".7"/>
+          <!-- Morogoro (flood, high) -->
+          <rect x="220" y="20" width="30" height="70" fill="url(#bar-g)" rx="3" opacity=".9"/>
+          <rect x="255" y="30" width="30" height="60" fill="url(#bar-g)" rx="3" opacity=".8"/>
+          <rect x="290" y="25" width="30" height="65" fill="url(#bar-g)" rx="3" opacity=".85"/>
+          <!-- Arusha (normal) -->
+          <rect x="390" y="45" width="30" height="45" fill="url(#bar-g)" rx="3" opacity=".7"/>
+          <rect x="425" y="50" width="30" height="40" fill="url(#bar-g)" rx="3" opacity=".65"/>
+          <rect x="460" y="48" width="30" height="42" fill="url(#bar-g)" rx="3" opacity=".7"/>
+          <!-- Baseline -->
+          <line x1="40" y1="90" x2="560" y2="90" stroke="#E2DDD6" stroke-width="1"/>
+          <!-- Zone labels -->
+          <text x="105" y="98" font-size="8" fill="#8A837A" text-anchor="middle" font-family="Space Mono">DODOMA (dry)</text>
+          <text x="270" y="98" font-size="8" fill="#8A837A" text-anchor="middle" font-family="Space Mono">MOROGORO (wet)</text>
+          <text x="440" y="98" font-size="8" fill="#8A837A" text-anchor="middle" font-family="Space Mono">ARUSHA (normal)</text>
+          <!-- Legend -->
+          <rect x="480" y="8" width="8" height="8" fill="#C0392B" rx="1"/>
+          <text x="492" y="16" font-size="8" fill="#4A443D" font-family="Plus Jakarta Sans">Drought signals</text>
+          <rect x="480" y="22" width="8" height="8" fill="#3A9E62" rx="1"/>
+          <text x="492" y="30" font-size="8" fill="#4A443D" font-family="Plus Jakarta Sans">Normal / above</text>
+        </svg>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="ph"><span class="ph-t">📡 Recent Farmer Observations</span><span style="font-family:var(--mono);font-size:10px;color:var(--ink3)">Via WhatsApp + USSD · Live</span></div>
+      <div class="pb"><div class="obs-grid" id="obs-grid"></div></div>
+    </div>
+  </div>
+
+  <!-- ═══ ZONE ANALYTICS ═══ -->
+  <div class="content hidden fadein" id="pg-zones">
+    <div style="display:flex;gap:8px;margin-bottom:4px">
+      <button class="btn bp" onclick="showZone('dodoma')">🔥 Dodoma</button>
+      <button class="btn bs" onclick="showZone('morogoro')">🌊 Morogoro</button>
+      <button class="btn bs" onclick="showZone('arusha')">✅ Arusha</button>
+    </div>
+    <div id="zone-detail">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+
+  <!-- ═══ DELIVERY ═══ -->
+  <div class="content hidden fadein" id="pg-delivery">
+    <div class="g4 kpi-row">
+      <div class="kpi g"><div class="kpi-l">Total Sent</div><div class="kpi-v">4,782</div></div>
+      <div class="kpi b"><div class="kpi-l">WhatsApp</div><div class="kpi-v">3,241</div></div>
+      <div class="kpi a"><div class="kpi-l">SMS</div><div class="kpi-v">1,141</div></div>
+      <div class="kpi g"><div class="kpi-l">USSD Sessions</div><div class="kpi-v">400</div></div>
+    </div>
+    <div class="panel">
+      <div class="ph"><span class="ph-t">📨 Delivery Log</span></div>
+      <div style="padding:0"><table class="tbl"><thead><tr><th>Advisory</th><th>Zone</th><th>Recipients</th><th>Channel</th><th>Sent</th><th>Open Rate</th><th>Actions</th></tr></thead><tbody id="del-tb"></tbody></table></div>
+    </div>
+  </div>
+
+  <!-- ═══ ALERTS ═══ -->
+  <div class="content hidden fadein" id="pg-alerts">
+    <div class="af" style="max-width:640px">
+      <div class="ai drought"><span class="ai-ico">🔥</span><div><div class="ai-t">Dodoma — Critical Drought Risk</div><div class="ai-d">ICPAC: 72% probability below-normal rainfall. 312 farmers at risk. Urgent: switch to sorghum/millet advisory. Delay maize planting 2–3 weeks.</div></div><span class="ai-time">2h ago</span></div>
+      <div class="ai flood"><span class="ai-ico">🌊</span><div><div class="ai-t">Morogoro — Flood Watch Active</div><div class="ai-d">ICPAC: 65% probability above-normal. 287 farmers. Drainage and raised-bed advisory needed for rice and bean growers.</div></div><span class="ai-time">6h ago</span></div>
+      <div class="ai ok"><span class="ai-ico">✅</span><div><div class="ai-t">Arusha — Season Normal</div><div class="ai-d">Near-normal Masika forecast. Standard advisory sent to 401 farmers. Monitor for pest pressure in April.</div></div><span class="ai-time">1d ago</span></div>
+    </div>
+  </div>
+
+  <!-- ═══ GRANT EXPORT ═══ -->
+  <div class="content hidden fadein" id="pg-grant">
+    <div style="font-size:12px;color:var(--ink2);background:var(--gl);border:1px solid rgba(31,107,62,.2);border-radius:var(--rs);padding:9px 13px">📄 <strong>Grant Application Export</strong> — One-click summary of your pilot data, impact metrics, and platform capabilities for AICCRA, Adaptation Fund, Equator Africa Fund, and Gates Foundation applications.</div>
+    <div class="g2">
+      <div>
+        <!-- Impact Numbers -->
+        <div class="grant-section">
+          <div class="gs-head"><span class="gs-title">📊 Pilot Impact Numbers</span><button class="btn" style="background:rgba(255,255,255,.2);color:#fff;font-size:11px" onclick="exportSection()">↓ Export</button></div>
+          <div class="gs-body">
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px">
+              <div class="stat-highlight"><div class="sh-num">1,000</div><div class="sh-label">Farmers Registered</div></div>
+              <div class="stat-highlight"><div class="sh-num">3</div><div class="sh-label">Agroecological Zones</div></div>
+              <div class="stat-highlight"><div class="sh-num">84%</div><div class="sh-label">Advisory Open Rate</div></div>
+              <div class="stat-highlight"><div class="sh-num">67%</div><div class="sh-label">Farmers Changed Decision</div></div>
+            </div>
+            <div style="font-size:12px;color:var(--ink3);font-style:italic">Based on farmer self-report survey, n=312, Dodoma pilot season 1</div>
+          </div>
+        </div>
+        <!-- Tech Summary -->
+        <div class="grant-section" style="margin-top:12px">
+          <div class="gs-head"><span class="gs-title">🛠 Technology Architecture</span></div>
+          <div class="gs-body">
+            <div style="display:flex;flex-direction:column;gap:7px;font-size:12px">
+              <div style="display:flex;gap:8px"><span style="color:var(--gm);font-weight:700">→</span><div><strong>Forecast Layer:</strong> ICPAC Masika/Vuli seasonal forecasts (free, public API). FEWS NET food security alerts.</div></div>
+              <div style="display:flex;gap:8px"><span style="color:var(--gm);font-weight:700">→</span><div><strong>Translation Engine:</strong> Claude AI (Anthropic) — ICPAC data → plain Swahili advisory in under 3 seconds.</div></div>
+              <div style="display:flex;gap:8px"><span style="color:var(--gm);font-weight:700">→</span><div><strong>Delivery Channels:</strong> WhatsApp Business API, Africa's Talking SMS + USSD. Feature-phone compatible.</div></div>
+              <div style="display:flex;gap:8px"><span style="color:var(--gm);font-weight:700">→</span><div><strong>Data Collection:</strong> Community Climate Ledger — farmer observations via 30-second USSD/WhatsApp flow.</div></div>
+              <div style="display:flex;gap:8px"><span style="color:var(--gm);font-weight:700">→</span><div><strong>Backend:</strong> Supabase (PostgreSQL) — farmer registry, observation data, advisory history.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <!-- Gap Statement -->
+        <div class="grant-section">
+          <div class="gs-head"><span class="gs-title">📝 Problem Statement (Grant-Ready)</span></div>
+          <div class="gs-body">
+            <div style="font-family:var(--noto);font-size:13px;line-height:1.8;color:var(--ink2)">
+              <p style="margin-bottom:10px">Africa's climate forecasting infrastructure has improved dramatically — ICPAC now produces seasonal outlooks 2–3 months ahead with documented 65–72% accuracy for East Africa. But <strong>this data does not reach the 65% of Africans who live in rural areas</strong> where climate consequences are most severe.</p>
+              <p style="margin-bottom:10px">In Tanzania, 65% of the workforce depends on rain-fed agriculture. When ICPAC issues a drought forecast for Dodoma, that information reaches the national meteorological office — and then stops. The 312,000 smallholder farmers in Dodoma who need to change their planting decisions receive nothing.</p>
+              <p><strong>Hali ya Hewa ("State of the Weather") closes this translation gap</strong> — connecting ICPAC's seasonal science to farmers' mobile phones, in Swahili, via WhatsApp and USSD, before each planting season.</p>
+            </div>
+          </div>
+        </div>
+        <!-- Budget Ask -->
+        <div class="grant-section" style="margin-top:12px">
+          <div class="gs-head"><span class="gs-title">💰 Phase 1 Budget Request</span></div>
+          <div class="gs-body">
+            <table class="tbl" style="font-size:12px">
+              <thead><tr><th>Item</th><th>Cost (CAD)</th></tr></thead>
+              <tbody>
+                <tr><td>Africa's Talking API (SMS + USSD · 12mo)</td><td>$2,400</td></tr>
+                <tr><td>Claude API (advisory generation · 12mo)</td><td>$1,800</td></tr>
+                <tr><td>WhatsApp Business API (12mo)</td><td>$1,200</td></tr>
+                <tr><td>Supabase Pro (database · 12mo)</td><td>$900</td></tr>
+                <tr><td>In-country partner (TZ agricultural ext.)</td><td>$8,400</td></tr>
+                <tr><td>Farmer recruitment (50-person pilot)</td><td>$2,200</td></tr>
+                <tr><td>Translation quality review (Swahili)</td><td>$1,500</td></tr>
+                <tr><td><strong>Total Phase 1</strong></td><td><strong>$18,400</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn bp" onclick="toast('📄 Generating PDF... (Connect your PDF library to export)')">📄 Export Full Grant PDF</button>
+      <button class="btn bs" onclick="toast('📊 Copied impact data to clipboard!')">📊 Copy Impact Data</button>
+      <button class="btn bs" onclick="toast('📧 Opening email draft...')">📧 Email to Funder</button>
+    </div>
+  </div>
+
+</div><!-- /.main -->
+
+<!-- ═══ MODALS ═══ -->
+
+<!-- SEND ADVISORY MODAL -->
+<div class="mo" id="send-modal">
+  <div class="md">
+    <div class="md-t">📤 Send Advisory</div>
+    <div class="md-s">Broadcast to farmers in selected zone via all active channels.</div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px">
+      <div class="fg"><label class="fl">Target Zone</label>
+        <select class="fs"><option>Dodoma — 312 farmers</option><option>Morogoro — 287 farmers</option><option>Arusha — 401 farmers</option><option>All Zones — 1,000 farmers</option></select>
+      </div>
+      <div class="fg"><label class="fl">Delivery Channels</label>
+        <select class="fs"><option>WhatsApp + SMS + USSD (All)</option><option>WhatsApp only</option><option>SMS only</option></select>
+      </div>
+      <div class="fg"><label class="fl">Schedule</label>
+        <select class="fs"><option>Send now</option><option>Tomorrow 7:00 AM EAT</option><option>Next Monday 7:00 AM EAT</option></select>
+      </div>
+    </div>
+    <div id="send-prog" style="display:none;margin-bottom:12px">
+      <div style="font-size:11px;color:var(--ink3);margin-bottom:5px">Sending...</div>
+      <div class="prog"><div class="pf pf-g" id="spf" style="width:0%"></div></div>
+      <div style="font-size:11px;color:var(--ink3);margin-top:3px" id="spt">0 / 312 delivered</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn bp" id="send-btn" onclick="doSend()" style="flex:1;justify-content:center">✅ Confirm Send</button>
+      <button class="btn bs" onclick="closeModal('send-modal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ENROLL FARMER MODAL -->
+<div class="mo" id="enroll-modal">
+  <div class="md">
+    <div class="md-t">👨‍🌾 Enroll New Farmer</div>
+    <div class="md-s">Add a farmer to the registry. They will receive their first advisory within 24 hours.</div>
+    <div class="enroll-grid" style="margin-bottom:12px">
+      <div class="fg"><label class="fl">Full Name</label><input class="fi" id="e-name" placeholder="e.g. Amina Juma"></div>
+      <div class="fg"><label class="fl">Phone Number</label><input class="fi" id="e-phone" placeholder="+255 7XX XXX XXX"></div>
+      <div class="fg"><label class="fl">Zone</label>
+        <select class="fs" id="e-zone"><option value="dodoma">Dodoma</option><option value="morogoro">Morogoro</option><option value="arusha">Arusha</option></select>
+      </div>
+      <div class="fg"><label class="fl">Primary Crop</label>
+        <select class="fs" id="e-crop"><option>Mtama (Sorghum)</option><option>Mahindi (Maize)</option><option>Muhogo (Cassava)</option><option>Mpunga (Rice)</option><option>Maharagwe (Beans)</option><option>Uwele (Millet)</option></select>
+      </div>
+      <div class="fg"><label class="fl">Channel</label>
+        <select class="fs" id="e-ch"><option>WhatsApp</option><option>SMS</option><option>USSD</option></select>
+      </div>
+      <div class="fg"><label class="fl">Farm Size (acres)</label><input class="fi" id="e-size" placeholder="e.g. 2.5"></div>
+    </div>
+    <div class="fg" style="margin-bottom:12px"><label class="fl">Notes</label><input class="fi" id="e-notes" placeholder="Any special context for this farmer..."></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn bp" onclick="enrollFarmer()" style="flex:1;justify-content:center">✅ Enroll Farmer</button>
+      <button class="btn bs" onclick="closeModal('enroll-modal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast-el"></div>
+
+<script>
+// ═══ DATA ═══
+const ZONES = {
+  dodoma:{name:"Dodoma",region:"Central",risk:"drought",riskLevel:.82,farmers:312,crops:["Mtama","Uwele","Muhogo","Karanga"],forecast:"below_normal",prob:"72%",conf:"High",ra:"-32%"},
+  morogoro:{name:"Morogoro",region:"Eastern",risk:"flood",riskLevel:.71,farmers:287,crops:["Mahindi","Mpunga","Maharagwe","Muhogo"],forecast:"above_normal",prob:"65%",conf:"Medium",ra:"+22%"},
+  arusha:{name:"Arusha",region:"Northern",risk:"mixed",riskLevel:.45,farmers:401,crops:["Mahindi","Maharagwe","Kahawa","Ngano"],forecast:"near_normal",prob:"52%",conf:"Medium",ra:"-8%"}
+};
+const FARMERS = [
+  {name:"Amina Juma",zone:"dodoma",phone:"+255 712 345 678",crops:"Mtama, Karanga",ch:"WhatsApp",enrolled:"Jan 2026",last:"2d ago",obs:14},
+  {name:"Hassan Mkwawa",zone:"dodoma",phone:"+255 721 234 567",crops:"Uwele",ch:"SMS",enrolled:"Jan 2026",last:"2d ago",obs:8},
+  {name:"Fatuma Ally",zone:"morogoro",phone:"+255 732 345 678",crops:"Mpunga, Mahindi",ch:"WhatsApp",enrolled:"Feb 2026",last:"3d ago",obs:11},
+  {name:"John Kibona",zone:"morogoro",phone:"+255 741 234 567",crops:"Maharagwe",ch:"USSD",enrolled:"Feb 2026",last:"5d ago",obs:6},
+  {name:"Mwanajuma Haji",zone:"arusha",phone:"+255 752 345 678",crops:"Mahindi, Maharagwe",ch:"WhatsApp",enrolled:"Feb 2026",last:"1d ago",obs:9},
+  {name:"Patrick Losai",zone:"arusha",phone:"+255 761 234 567",crops:"Ngano, Kahawa",ch:"WhatsApp",enrolled:"Mar 2026",last:"Today",obs:3},
+  {name:"Rehema Saidi",zone:"dodoma",phone:"+255 771 234 567",crops:"Muhogo",ch:"SMS",enrolled:"Mar 2026",last:"3d ago",obs:5},
+  {name:"Omar Rashidi",zone:"arusha",phone:"+255 781 234 567",crops:"Mahindi",ch:"WhatsApp",enrolled:"Mar 2026",last:"Today",obs:2},
+];
+const OBSERVATIONS = [
+  {farmer:"Amina Juma",zone:"Dodoma",date:"Today 08:14",rainfall:"None",temp:"Hot",crop:"Wilting",soil:"Very Dry"},
+  {farmer:"Hassan Mkwawa",zone:"Dodoma",date:"Today 07:32",rainfall:"None",temp:"Hot",crop:"Normal",soil:"Dry"},
+  {farmer:"Fatuma Ally",zone:"Morogoro",date:"Yesterday",rainfall:"Heavy",temp:"Normal",crop:"Waterlogged",soil:"Saturated"},
+  {farmer:"Mwanajuma Haji",zone:"Arusha",date:"Yesterday",rainfall:"Moderate",temp:"Normal",crop:"Normal",soil:"Moist"},
+  {farmer:"John Kibona",zone:"Morogoro",date:"2d ago",rainfall:"Heavy",temp:"Cool",crop:"Normal",soil:"Wet"},
+  {farmer:"Patrick Losai",zone:"Arusha",date:"Today 09:01",rainfall:"Light",temp:"Normal",crop:"Normal",soil:"Normal"},
+];
+const DELIVERIES = [
+  {adv:"Drought Alert — Delay Planting",zone:"Dodoma",rec:312,ch:"WhatsApp + SMS",sent:"Apr 12, 2026",rate:"87%"},
+  {adv:"Flood Warning — Raise Beds",zone:"Morogoro",rec:287,ch:"All Channels",sent:"Apr 11, 2026",rate:"79%"},
+  {adv:"Masika Season Opening Advisory",zone:"All Zones",rec:1000,ch:"All Channels",sent:"Apr 8, 2026",rate:"84%"},
+  {adv:"Sorghum Planting Window",zone:"Dodoma",rec:312,ch:"SMS",sent:"Mar 28, 2026",rate:"71%"},
+];
+const HISTORY = [
+  {id:1,title:"Dodoma Drought Emergency — Delay Planting",zone:"Dodoma",type:"Drought Alert",date:"Apr 12, 2026",farmers:312,rate:"87%",sw:"Mvua haitoshi msimu huu wa Masika huko Dodoma. Usipande mahindi bado — subiri wiki mbili zaidi. Badala yake, andaa mbegu za mtama au uwele ambazo zinastahimili ukame vizuri zaidi.",en:"Rainfall is insufficient this Masika season in Dodoma. Do not plant maize yet — wait two more weeks. Instead, prepare sorghum or millet seeds which tolerate drought conditions far better."},
+  {id:2,title:"Morogoro Flood Warning — Protect Your Crops",zone:"Morogoro",type:"Flood Warning",date:"Apr 11, 2026",farmers:287,rate:"79%",sw:"Mvua nyingi inatarajiwa wiki hii huko Morogoro. Tengeneza matuta ya juu kuzuia maji mengi. Hakikisha mifereji ya maji iko wazi kuzunguka shamba lako.",en:"Heavy rains are expected this week in Morogoro. Create raised planting beds to prevent waterlogging. Ensure drainage channels are clear around your farm."},
+  {id:3,title:"Masika 2026 Season Opening Advisory",zone:"All Zones",type:"Planting Advisory",date:"Apr 8, 2026",farmers:1000,rate:"84%",sw:"Msimu wa Masika 2026 unaanza. Hali ya hewa inaonyesha mvua ya wastani hadi chini ya kawaida mashariki, na mvua ya kawaida hadi zaidi kaskazini. Panda kulingana na ushauri wa eneo lako.",en:"The Masika 2026 season begins. Weather shows below-normal rainfall in the east and near-normal in the north. Plant according to your zone's specific advisory."},
+  {id:4,title:"Sorghum Planting Window — Dodoma",zone:"Dodoma",type:"Planting Advisory",date:"Mar 28, 2026",farmers:312,rate:"71%",sw:"Dirisha la kupanda mtama limefika. Mvua za mwanzo zimeonekana Dodoma. Panda mtama sasa katika udongo ulionyeshwa vizuri. Kina cha kupanda: sentimita 2-3.",en:"The sorghum planting window has arrived. First rains have been observed in Dodoma. Plant sorghum now in well-moistened soil. Planting depth: 2-3 cm."},
+];
+
+// ═══ NAVIGATION ═══
+function go(page, el) {
+  document.querySelectorAll('.content').forEach(c=>c.classList.add('hidden'));
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
+  document.getElementById('pg-'+page).classList.remove('hidden');
+  if(el) el.classList.add('on');
+  const titles={overview:'Platform Overview',advisory:'Advisory Engine — AI + ICPAC',simulator:'WhatsApp Simulator',history:'Advisory History',farmers:'Farmer Registry',ledger:'Community Climate Ledger',zones:'Zone Analytics',delivery:'Message Delivery',alerts:'Active Alerts',grant:'Grant Application Export'};
+  document.getElementById('pg-title').textContent=titles[page]||page;
+  if(page==='farmers')popFarmers();
+  if(page==='ledger')popLedger();
+  if(page==='delivery')popDelivery();
+  if(page==='history')popHistory();
+  if(page==='zones')showZone('dodoma');
+  if(page==='simulator')initSim();
+}
+
+// ═══ TABLES ═══
+function popFarmers(){
+  document.getElementById('farm-tb').innerHTML=FARMERS.map(f=>`<tr>
+    <td>${f.name}</td>
+    <td><span class="zbdg ${f.zone==='dodoma'?'bdg-d':f.zone==='morogoro'?'bdg-f':'bdg-ok'}">${ZONES[f.zone].name}</span></td>
+    <td style="font-family:var(--mono);font-size:10px;color:var(--ink3)">${f.phone}</td>
+    <td>${f.crops}</td>
+    <td><span class="chip ${f.ch==='WhatsApp'?'chip-g':f.ch==='SMS'?'chip-b':'chip-a'}">${f.ch}</span></td>
+    <td style="color:var(--ink3);font-size:11px">${f.enrolled}</td>
+    <td style="color:var(--ink3);font-size:11px">${f.last}</td>
+    <td style="font-family:var(--mono);font-size:11px;color:var(--gm)">${f.obs}</td>
+  </tr>`).join('')+`<tr><td colspan="8" style="text-align:center;color:var(--ink3);font-style:italic;padding:10px;font-size:12px">+ 992 more farmers registered in the database…</td></tr>`;
+}
+function popLedger(){
+  document.getElementById('obs-grid').innerHTML=OBSERVATIONS.map(o=>`<div class="obs-card">
+    <div class="obs-f">${o.farmer}</div>
+    <div class="obs-m">${o.zone} · ${o.date}</div>
+    <div class="obs-met">
+      <div class="obs-mi"><div class="obs-ml">Rainfall</div><div class="obs-mv" style="color:${o.rainfall==='None'?'var(--red)':o.rainfall==='Heavy'?'var(--blue)':'var(--gm)'}">${o.rainfall}</div></div>
+      <div class="obs-mi"><div class="obs-ml">Temperature</div><div class="obs-mv" style="color:${o.temp==='Hot'?'var(--amber)':'var(--ink)'}">${o.temp}</div></div>
+      <div class="obs-mi"><div class="obs-ml">Crop Status</div><div class="obs-mv" style="color:${o.crop==='Normal'?'var(--gm)':'var(--red)'}">${o.crop}</div></div>
+      <div class="obs-mi"><div class="obs-ml">Soil</div><div class="obs-mv">${o.soil}</div></div>
+    </div>
+  </div>`).join('');
+}
+function popDelivery(){
+  document.getElementById('del-tb').innerHTML=DELIVERIES.map(d=>`<tr>
+    <td>${d.adv}</td><td>${d.zone}</td>
+    <td style="font-family:var(--mono)">${d.rec}</td>
+    <td style="color:var(--ink3);font-size:11px">${d.ch}</td>
+    <td style="color:var(--ink3);font-size:11px">${d.sent}</td>
+    <td><span style="color:var(--gm);font-weight:700">${d.rate}</span></td>
+    <td><button class="btn bs" style="padding:4px 9px;font-size:11px">View</button></td>
+  </tr>`).join('');
+}
+function popHistory(){
+  document.getElementById('hist-list').innerHTML=HISTORY.map(h=>`<div class="hist-item" onclick="viewHist(${h.id})">
+    <div class="hi-top">
+      <div class="hi-name">${h.title}</div>
+      <div class="hi-meta">${h.date}</div>
+    </div>
+    <div class="hi-text" style="font-family:var(--noto)">${h.sw}</div>
+    <div class="hi-footer">
+      <span class="chip chip-g">${h.zone}</span>
+      <span class="chip chip-b">${h.type}</span>
+      <span class="chip ${h.zone==='All Zones'?'chip-g':'chip-a'}">${h.farmers} farmers</span>
+      <span class="chip chip-g">📬 ${h.rate} open rate</span>
+    </div>
+  </div>`).join('');
+}
+
+// ═══ ZONE ANALYTICS ═══
+function showZone(z){
+  const zd=ZONES[z];
+  const col=z==='dodoma'?'var(--red)':z==='morogoro'?'var(--bm)':'var(--gm)';
+  const riskLabel={dodoma:'82% Drought Risk',morogoro:'71% Flood Risk',arusha:'45% Mixed / Near Normal'}[z];
+  document.querySelectorAll('#pg-zones button').forEach(b=>b.className='btn bs');
+  document.querySelector(`#pg-zones button:${z==='dodoma'?'first-child':z==='morogoro'?'nth-child(2)':'last-child'}`).className='btn bp';
+  document.getElementById('zone-detail').innerHTML=`
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px">
+    <div class="kpi" style="border-top:2px solid ${col}"><div class="kpi-l">Farmers in Zone</div><div class="kpi-v">${zd.farmers}</div></div>
+    <div class="kpi" style="border-top:2px solid ${col}"><div class="kpi-l">Risk Level</div><div class="kpi-v" style="font-size:16px">${riskLabel}</div></div>
+    <div class="kpi" style="border-top:2px solid ${col}"><div class="kpi-l">Rainfall Anomaly</div><div class="kpi-v">${zd.ra}</div></div>
+  </div>
+  <div class="panel">
+    <div class="ph"><span class="ph-t">🗺 ${zd.name} Zone — ${zd.region} Tanzania</span><span class="zbdg ${z==='dodoma'?'bdg-d':z==='morogoro'?'bdg-f':'bdg-ok'}">${z==='dodoma'?'Drought Alert':z==='morogoro'?'Flood Watch':'Normal Season'}</span></div>
+    <div class="pb" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div>
+        <div class="sec-lbl">ICPAC Forecast</div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:12px">
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--ink3)">Season outlook</span><span style="font-weight:700">${zd.forecast.replace('_',' ')}</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--ink3)">Probability</span><span style="font-weight:700;color:${col}">${zd.prob}</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--ink3)">Confidence</span><span style="font-weight:700">${zd.conf}</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--ink3)">Rainfall change</span><span style="font-weight:700;color:${col}">${zd.ra} vs normal</span></div>
+        </div>
+        <div style="margin-top:14px">
+          <div class="sec-lbl">Registered Crops</div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap">${zd.crops.map(c=>`<span class="chip chip-g">${c}</span>`).join('')}</div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-lbl">Recommended Advisory Actions</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          ${z==='dodoma'?
+            ['Delay maize planting 2–3 weeks','Switch to sorghum or millet where possible','Apply mulch to all fields immediately','Monitor rainfall daily before planting']:
+          z==='morogoro'?
+            ['Create raised planting beds (30–40cm high)','Clear all drainage channels before planting','Plant rice on highest available ground','Inspect crops weekly for waterlogging signs']:
+            ['Plant on regular Masika schedule','Monitor for pest pressure — high risk this season','Apply balanced fertilizer at planting','Normal irrigation practices']
+          }.map(a=>`<div style="display:flex;gap:7px;align-items:flex-start;font-size:12px;padding:5px 9px;background:var(--gl);border-radius:6px;border:1px solid rgba(31,107,62,.1)"><span style="color:var(--gm);font-weight:700">✓</span>${a}</div>`).join('')}
+        </div>
+        <button class="btn bp" style="margin-top:12px;width:100%;justify-content:center" onclick="go('advisory',null)">🤖 Generate Advisory for ${zd.name}</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ═══ ADVISORY ENGINE ═══
+let curAdv={sw:'',en:''},curLang='sw';
+
+function updFD(){
+  const z=document.getElementById('z-sel').value, zd=ZONES[z];
+  const oc={below_normal:'var(--amber)',above_normal:'var(--bm)',near_normal:'var(--gm)'}[zd.forecast];
+  const ol={below_normal:'Below Normal',above_normal:'Above Normal',near_normal:'Near Normal'}[zd.forecast];
+  document.getElementById('fd-out').textContent=ol;
+  document.getElementById('fd-out').style.color=oc;
+  document.getElementById('fd-prob').textContent=zd.prob;
+  document.getElementById('fd-conf').textContent=zd.conf;
+}
+
+async function genAdvisory(){
+  const zid=document.getElementById('z-sel').value;
+  const crop=document.getElementById('c-sel').options[document.getElementById('c-sel').selectedIndex].text;
+  const ctx=document.getElementById('ctx').value;
+  const z=ZONES[zid];
+  const btn=document.getElementById('gen-btn');
+  btn.disabled=true; btn.textContent='⏳ Generating...';
+  const box=document.getElementById('adv-box');
+  box.innerHTML='<span class="sc"></span>';
+  document.getElementById('adv-empty').style.display='none';
+  document.getElementById('act-sec').style.display='none';
+  document.getElementById('ch-sec').style.display='none';
+  document.getElementById('ae-tag').textContent='Generating...';
+  document.getElementById('ae-tag').className='ae-tag tag-gen';
+
+  const fdesc={below_normal:`significantly below-normal rainfall expected (${z.prob} probability of drought)`,above_normal:`above-normal rainfall expected (${z.prob} probability of flooding)`,near_normal:`near-normal rainfall expected (${z.prob} probability, slight deficit)`}[z.forecast];
+
+  const sys=`You are a Swahili-speaking agricultural advisor for Tanzanian smallholder farmers. Translate ICPAC climate forecasts into clear, actionable farming advice.
+
+Output ONLY a valid JSON object with this exact structure:
+{
+  "sw": "2-3 sentences in plain Swahili, like speaking to a farmer directly",
+  "sw_short": "SMS version max 140 characters in Swahili",
+  "en": "English translation of sw",
+  "actions": ["Swahili action 1", "Swahili action 2", "Swahili action 3"],
+  "ussd": "Swahili USSD option text max 30 chars"
+}
+
+Use simple words. Be specific. Include numbers when helpful (weeks, cm, amounts).`;
+
+  const usr=`Zone: ${z.name}, ${z.region} Tanzania
+Forecast: ${fdesc}
+Crop: ${crop}
+Farmers: ${z.farmers}
+${ctx?`Local context: ${ctx}`:''}
+
+Generate a planting/farming advisory addressing this specific climate risk.`;
+
+  try{
+    const res=await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({model:"claude-haiku-4-5-20251001",max_tokens:800,stream:true,messages:[{role:"user",content:usr}],system:sys})
+    });
+    if(!res.ok) throw new Error(res.status);
+    let full='';
+    const rdr=res.body.getReader(),dec=new TextDecoder();
+    while(true){
+      const{done,value}=await rdr.read();
+      if(done) break;
+      const lines=dec.decode(value).split('\n');
+      for(const l of lines){
+        if(l.startsWith('data: ')){
+          const d=l.slice(6);
+          if(d==='[DONE]') continue;
+          try{const p=JSON.parse(d);if(p.delta?.text){full+=p.delta.text;const show=full.replace(/[{}"]/g,'').replace(/sw:|en:|actions:|sw_short:|ussd:/g,'').trim();box.innerHTML=show.substring(0,180)+'<span class="sc"></span>';}}catch{}
+        }
+      }
+    }
+    const jm=full.match(/\{[\s\S]*\}/);
+    if(jm){const r=JSON.parse(jm[0]);curAdv=r;renderAdv(r);}
+    else throw new Error("parse fail");
+  } catch(e) {
+    const fb={
+      dodoma:{sw:"Msimu huu wa Masika, mvua itakuwa chini ya kawaida huko Dodoma. Chagua kupanda mtama au uwele badala ya mahindi. Ongeza matandazo shambani na usubiri mvua ya kwanza imara kabla ya kupanda — wiki 2 hadi 3.",sw_short:"Mvua kidogo Dodoma! Panda mtama/uwele. Subiri wiki 2-3. Tumia matandazo.",en:"Below-normal rains expected in Dodoma this Masika season. Plant drought-tolerant sorghum or millet instead of maize. Add mulch and wait for consistent first rains — about 2 to 3 weeks.",actions:["Andaa mbegu za mtama au uwele sasa hivi","Weka matandazo shambani kuzuia mvuke","Subiri mvua ya kwanza mara mbili kabla ya kupanda"],ussd:"Ushauri: Panda mtama"},
+      morogoro:{sw:"Mvua nyingi inatarajiwa huko Morogoro msimu huu. Linda mazao yako dhidi ya maji kwa kutengeneza matuta ya juu. Panda mpunga na mahindi kwenye ardhi ya juu zaidi ukiwezekana.",sw_short:"Mvua nyingi Morogoro! Fanya matuta ya juu cm 30. Safisha mifereji.",en:"Heavy rains expected in Morogoro this season. Protect crops from waterlogging with raised planting beds. Plant rice and maize on higher ground where possible.",actions:["Tengeneza matuta ya juu (30-40cm) kabla ya kupanda","Safisha mifereji ya maji kuzunguka shamba","Panda mbegu kwenye ardhi ya juu zaidi"],ussd:"Tahadhari: Maji mengi"},
+      arusha:{sw:"Msimu wa Masika huko Arusha unatarajiwa kuwa karibu na kawaida. Panda kwa ratiba yako ya kawaida. Angalia wadudu kwa makini kwani hali nzuri ya hewa inaweza kuongeza hatari.",sw_short:"Mvua ya kawaida Arusha. Panda sawa ratiba. Angalia wadudu wiki hii.",en:"Near-normal Masika expected in Arusha. Plant on your usual schedule. Watch carefully for pest pressure as favorable conditions can increase pest risk.",actions:["Panda kwa ratiba yako ya kawaida ya Masika","Angalia mimea kila wiki kwa dalili za wadudu","Weka pembeni dawa ya wadudu kwa tahadhari"],ussd:"Ushauri wa kawaida"}
+    };
+    const r=fb[zid]||fb.arusha; curAdv=r; renderAdv(r);
+  }
+  btn.disabled=false; btn.textContent='✨ Generate Advisory';
+}
+
+function renderAdv(r){
+  document.getElementById('adv-box').innerHTML=r[curLang==='sw'?'sw':'en'];
+  if(r.actions){
+    document.getElementById('act-sec').style.display='block';
+    document.getElementById('act-list').innerHTML=r.actions.map(a=>`<div style="display:flex;gap:7px;align-items:flex-start;padding:6px 10px;background:var(--gl);border-radius:6px;border:1px solid rgba(31,107,62,.12);font-family:var(--noto);font-size:13px"><span style="color:var(--gm);font-weight:700;flex-shrink:0">✓</span>${a}</div>`).join('');
+  }
+  document.getElementById('ch-sec').style.display='block';
+  const zname=document.getElementById('z-sel').options[document.getElementById('z-sel').selectedIndex].text.split('—')[0].trim();
+  const short=r.sw_short||r.sw.substring(0,140);
+  document.getElementById('wa-prev').textContent=`🌦 *Hali ya Hewa — ${zname}*\n\n${r.sw}`;
+  document.getElementById('sms-prev').textContent=`HYH: ${short}`;
+  document.getElementById('sms-ct').textContent=`${short.length}/160`;
+  document.getElementById('ussd-prev').innerHTML=`CON Hali ya Hewa<br>${zname}<br><br>${r.ussd||'Ushauri tayari'}<br><br>1. Somea tena<br>2. Maswali<br>0. Rudi`;
+  document.getElementById('ae-tag').textContent='✓ Generated';
+  document.getElementById('ae-tag').className='ae-tag tag-rdy';
+  document.getElementById('adv-empty').style.display='none';
+  saveToHistory(r);
+}
+
+function saveToHistory(r){
+  const z=ZONES[document.getElementById('z-sel').value];
+  const now=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+  HISTORY.unshift({id:Date.now(),title:`${z.name} — ${document.getElementById('at-sel').options[document.getElementById('at-sel').selectedIndex].text}`,zone:z.name,type:document.getElementById('at-sel').options[document.getElementById('at-sel').selectedIndex].text,date:now,farmers:z.farmers,rate:'—',sw:r.sw,en:r.en});
+}
+
+function swLang(l){
+  curLang=l;
+  document.getElementById('lb-sw').classList.toggle('on',l==='sw');
+  document.getElementById('lb-en').classList.toggle('on',l==='en');
+  if(curAdv.sw) document.getElementById('adv-box').innerHTML=curAdv[l==='sw'?'sw':'en']||'';
+}
+function copyAdv(){navigator.clipboard.writeText(curAdv.sw||'').catch(()=>{});toast('📋 Advisory copied to clipboard!');}
+function saveAdv(){toast('💾 Advisory saved to history!');}
+
+// ═══ WHATSAPP SIMULATOR ═══
+const SIM_SCRIPTS = {
+  amina:[
+    {role:'sys',msg:'Habari! Karibu kwenye Hali ya Hewa. Tuma jina lako, wilaya, na zao lako kujisajili. 🌱',delay:0},
+    {role:'usr',msg:'Amina Juma, Dodoma, Mtama',delay:1200},
+    {role:'sys',msg:'Asante Amina! Umesajiliwa vizuri. Utapata ushauri wa kilimo kila Jumatatu asubuhi. 🌦\n\nMsimu wa Masika 2026 unaanza. Ushauri wako wa kwanza ufuatao...',delay:2000},
+    {role:'sys',msg:'🌦 *Hali ya Hewa — Dodoma*\n\nMsimu huu wa Masika, mvua itakuwa chini ya kawaida huko Dodoma. Chagua kupanda mtama badala ya mahindi. Subiri mvua ya kwanza imara wiki 2–3 kabla ya kupanda.',delay:3500},
+    {role:'usr',msg:'Nimepanda mahindi tayari... Nifanye nini?',delay:5000},
+    {role:'sys',msg:'Usijali Amina. Kama umeshapanda mahindi, ongeza matandazo kuzuia mvuke wa udongo. Pia, panda safu za mtama kando ya mahindi kama bima ya ukame. Tunakulinda! 💪🌾',delay:6500},
+    {role:'usr',msg:'Asante sana! Mvua ya leo imekuwa kidogo sana',delay:8000},
+    {role:'sys',msg:'Asante kwa ripoti yako! Tumeweka kwenye rekodi ya hali ya hewa. Data yako inasaidia wakulima wengine pia. Endelea kutoa ripoti kila wiki! 📊',delay:9200},
+  ],
+  hassan:[
+    {role:'sys',msg:'Habari! Karibu kwenye Hali ya Hewa. Tuma jina lako, wilaya, na zao lako. 🌱',delay:0},
+    {role:'usr',msg:'Hassan Mkwawa, Dodoma, Uwele',delay:1000},
+    {role:'sys',msg:'Karibu Hassan! Dodoma inahitaji umakini msimu huu — mvua itakuwa chini ya kawaida.',delay:1800},
+    {role:'sys',msg:'🌦 *Ushauri wa Haraka — Dodoma*\n\nUwele (millet) ni chaguo nzuri sana msimu huu! Ustahimilivu wake wa ukame ni bora. Panda wakati mvua ya kwanza inafika. Kina: cm 2. Nafasi: cm 45×15.',delay:3000},
+    {role:'usr',msg:'Mbegu za uwele zinauzwa wapi karibu?',delay:4500},
+    {role:'sys',msg:'Mbegu za uwele zinapatikana: soko la Dodoma mjini, SACCOS ya wakulima wilayani, au Agri-shop ya Chamwino. Aina nzuri: Serena au Sediment-1 kwa ukame. 🌾',delay:5800},
+  ],
+  fatuma:[
+    {role:'sys',msg:'Habari! Karibu kwenye Hali ya Hewa. 🌱',delay:0},
+    {role:'usr',msg:'Fatuma Ally, Morogoro, Mpunga',delay:900},
+    {role:'sys',msg:'Asante Fatuma! Morogoro msimu huu ina tahadhari ya mvua nyingi. Kwa mpunga — hii inaweza kuwa nzuri lakini inahitaji udhibiti.',delay:1700},
+    {role:'sys',msg:'🌦 *Hali ya Hewa — Morogoro*\n\nMvua nyingi inatarajiwa msimu huu. Kwa mpunga, hii ni fursa — lakini kwanza fua mifereji yote ya maji. Panda katika maeneo ya chini yenye maji ya kutosha.',delay:3200},
+    {role:'usr',msg:'Mvua imekuwa kubwa sana leo hapa',delay:4800},
+    {role:'sys',msg:'Asante kwa ripoti! Tunaona hali hii katika wilaya yako. Hakikisha mifereji yako iko wazi na mimea haizamii. Tutakutumia onyo la mapema kama hatari zaidi. 🌊',delay:6000},
+  ],
+  mwanajuma:[
+    {role:'sys',msg:'Habari! Karibu kwenye Hali ya Hewa. 🌱',delay:0},
+    {role:'usr',msg:'Mwanajuma Haji, Arusha, Mahindi',delay:1100},
+    {role:'sys',msg:'Karibu Mwanajuma! Arusha msimu huu ina hali nzuri ya mvua. Mahindi yatakuwa na msimu mzuri!',delay:1900},
+    {role:'sys',msg:'🌦 *Hali ya Hewa — Arusha*\n\nMvua ya kawaida inatarajiwa msimu huu. Panda mahindi kwa ratiba yako ya kawaida. Lakini angalia sana wadudu — hali nzuri ya hewa pia inawaendeleza!',delay:3400},
+    {role:'usr',msg:'Nianze kupanda lini hasa?',delay:5000},
+    {role:'sys',msg:'Arusha: Anza kupanda mahindi wiki ya kwanza ya Machi-Aprili wakati udongo una unyevu wa kutosha. Mbegu nzuri: SEEDCO SC403 au H614D. Mbolea: DAP wakati wa kupanda, Urea wiki 4 baadaye. 🌽',delay:6400},
+  ],
+};
+
+let simIdx=0,simTimer=null,simKey='amina';
+function initSim(){
+  document.getElementById('wa-msgs').innerHTML=`<div class="wa-msg in">Habari! Karibu kwenye Hali ya Hewa. Tuma jina lako, wilaya, na zao lako kujisajili. 🌱<div class="wa-msg-time">08:00</div></div>`;
+  simIdx=0;
+}
+function loadSimFarmer(){
+  simKey=document.getElementById('sim-farmer').value;
+  resetSim();
+}
+function resetSim(){
+  if(simTimer) clearTimeout(simTimer);
+  simIdx=0;
+  document.getElementById('wa-msgs').innerHTML='';
+  document.getElementById('wa-status').textContent='Online';
+}
+function startSim(){
+  resetSim();
+  simKey=document.getElementById('sim-farmer').value;
+  const sc=SIM_SCRIPTS[simKey];
+  function playNext(){
+    if(simIdx>=sc.length) return;
+    const step=sc[simIdx++];
+    simTimer=setTimeout(()=>{
+      const msgs=document.getElementById('wa-msgs');
+      const now=new Date().toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'});
+      const div=document.createElement('div');
+      div.className=`wa-msg ${step.role==='usr'?'out':'in'}`;
+      div.innerHTML=step.msg.replace(/\n/g,'<br>')+`<div class="wa-msg-time">${now}${step.role==='usr'?' ✓✓':''}</div>`;
+      msgs.appendChild(div);
+      msgs.scrollTop=msgs.scrollHeight;
+      if(simIdx<sc.length) playNext();
+    },step.delay);
+  }
+  playNext();
+}
+function sendSimMsg(){
+  const input=document.getElementById('wa-input-disp');
+  const msg=input.textContent==='Andika ujumbe...'?'Asante sana!':input.textContent;
+  const msgs=document.getElementById('wa-msgs');
+  const div=document.createElement('div');
+  div.className='wa-msg out';
+  div.innerHTML=`${msg}<div class="wa-msg-time">${new Date().toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'})} ✓✓</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop=msgs.scrollHeight;
+  setTimeout(()=>{
+    const rep=document.createElement('div');
+    rep.className='wa-msg in';
+    rep.innerHTML=`Asante kwa ujumbe wako! Tutakusaidia zaidi. Je, una swali kuhusu mazao yako? 🌾<div class="wa-msg-time">${new Date().toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'})}</div>`;
+    msgs.appendChild(rep);
+    msgs.scrollTop=msgs.scrollHeight;
+  },1200);
+}
+
+// ═══ ZONE MAP ═══
+function selZone(el,z){
+  document.querySelectorAll('.zone-card').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+// ═══ MODALS ═══
+function openModal(id){document.getElementById(id).classList.add('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+document.addEventListener('click',e=>{if(e.target.classList.contains('mo'))e.target.classList.remove('open')});
+
+function doSend(){
+  const btn=document.getElementById('send-btn');
+  btn.disabled=true; btn.textContent='📤 Sending...';
+  document.getElementById('send-prog').style.display='block';
+  let p=0,tot=312;
+  const iv=setInterval(()=>{
+    p=Math.min(p+Math.floor(Math.random()*28)+12,tot);
+    const pct=Math.round(p/tot*100);
+    document.getElementById('spf').style.width=pct+'%';
+    document.getElementById('spt').textContent=`${p} / ${tot} delivered`;
+    if(p>=tot){
+      clearInterval(iv);
+      btn.textContent='✅ All Sent!';
+      btn.style.background='var(--gm)';
+      setTimeout(()=>{closeModal('send-modal');toast('📤 Advisory sent to 312 farmers in Dodoma!');},1200);
+    }
+  },100);
+}
+
+function enrollFarmer(){
+  const name=document.getElementById('e-name').value.trim();
+  const phone=document.getElementById('e-phone').value.trim();
+  const zone=document.getElementById('e-zone').value;
+  const crop=document.getElementById('e-crop').value;
+  const ch=document.getElementById('e-ch').value;
+  if(!name||!phone){toast('⚠️ Please fill in name and phone number');return;}
+  FARMERS.unshift({name,zone,phone,crops:crop,ch,enrolled:new Date().toLocaleDateString('en-GB',{month:'short',year:'numeric'}),last:'Just enrolled',obs:0});
+  ZONES[zone].farmers++;
+  closeModal('enroll-modal');
+  toast(`✅ ${name} enrolled! First advisory will be sent Monday.`);
+  ['e-name','e-phone','e-notes','e-size'].forEach(id=>document.getElementById(id).value='');
+}
+
+// ═══ HISTORY VIEW ═══
+function viewHist(id){
+  const h=HISTORY.find(x=>x.id===id);
+  if(!h) return;
+  toast(`📖 "${h.title}" — Sw: ${h.sw.substring(0,60)}...`);
+}
+
+function exportSection(){toast('📄 Opening export... (connect PDF library for full export)')}
+
+// ═══ TOAST ═══
+function toast(msg){
+  const t=document.getElementById('toast-el');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3200);
+}
+
+// ═══ INIT ═══
+window.onload=()=>{
+  popFarmers(); popLedger(); popDelivery(); popHistory();
+  updFD();
+  document.getElementById('z-sel').addEventListener('change',updFD);
+  document.querySelectorAll('#pg-zones button').forEach(b=>b.addEventListener('click',function(){
+    document.querySelectorAll('#pg-zones button').forEach(x=>x.className='btn bs');
+    this.className='btn bp';
+  }));
+};
+</script>
+</body>
+</html>

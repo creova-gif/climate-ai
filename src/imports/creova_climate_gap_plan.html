@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CREOVA Climate Gap Plan 2026–2030</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0A0F0D;
+  --surface: #111A14;
+  --border: rgba(255,255,255,0.07);
+  --border-strong: rgba(255,255,255,0.14);
+  --text: #E8F0EA;
+  --muted: #6B7D70;
+  --green: #3DD68C;
+  --green-dim: #1A5C3A;
+  --amber: #F5A623;
+  --amber-dim: #5C3C00;
+  --red: #E05252;
+  --blue: #5B9BD5;
+  --blue-dim: #1A2E4A;
+  --serif: 'Source Serif 4', Georgia, serif;
+  --sans: 'Syne', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ─── HEADER ─── */
+header {
+  padding: 3rem 2rem 2.5rem;
+  border-bottom: 1px solid var(--border);
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.header-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 10px;
+}
+.header-tag::before { content:''; width:32px; height:1px; background:var(--green); }
+h1 {
+  font-family: var(--sans);
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+h1 span { color: var(--green); }
+.header-desc {
+  font-family: var(--serif);
+  font-size: 16px;
+  color: var(--muted);
+  max-width: 640px;
+  line-height: 1.75;
+  font-style: italic;
+}
+.nav-pills {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1.5rem;
+}
+.nav-pill {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 5px 12px; border-radius: 20px;
+  border: 1px solid var(--border-strong); color: var(--muted);
+  cursor: pointer; transition: all 0.2s; text-decoration: none;
+}
+.nav-pill:hover { border-color: var(--green); color: var(--green); }
+
+/* ─── LAYOUT ─── */
+.wrap { max-width: 1000px; margin: 0 auto; padding: 0 2rem 6rem; }
+
+/* ─── PHASE BLOCK ─── */
+.phase {
+  margin: 3rem 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.phase-header {
+  display: flex; align-items: center; gap: 16px;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.phase-num {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--muted); flex-shrink: 0;
+}
+.phase-title {
+  font-size: 1.1rem; font-weight: 700; color: var(--text); flex: 1;
+}
+.phase-badge {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 4px 12px; border-radius: 20px;
+  flex-shrink: 0;
+}
+.badge-green { background: rgba(61,214,140,0.12); color: var(--green); border: 1px solid rgba(61,214,140,0.25); }
+.badge-amber { background: rgba(245,166,35,0.12); color: var(--amber); border: 1px solid rgba(245,166,35,0.25); }
+.badge-blue  { background: rgba(91,155,213,0.12); color: var(--blue);  border: 1px solid rgba(91,155,213,0.25); }
+.phase-body { padding: 1.5rem; }
+
+/* ─── PRODUCT CARD ─── */
+.product-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.product-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+.pc-green::before { background: var(--green); }
+.pc-amber::before { background: var(--amber); }
+.pc-blue::before  { background: var(--blue); }
+.pc-red::before   { background: var(--red); }
+
+.pc-top {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 12px;
+  margin-bottom: 10px;
+}
+.pc-name { font-size: 1rem; font-weight: 700; color: var(--text); line-height: 1.2; }
+.pc-tag {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 3px 10px; border-radius: 20px;
+  flex-shrink: 0; white-space: nowrap;
+}
+.pc-tagline {
+  font-family: var(--serif); font-style: italic;
+  font-size: 13px; color: var(--muted); margin-bottom: 12px;
+}
+.pc-body { font-size: 13px; color: rgba(232,240,234,0.7); line-height: 1.7; }
+
+/* ─── SPEC GRID ─── */
+.spec-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1px; background: var(--border);
+  border-radius: 8px; overflow: hidden; margin-top: 12px;
+}
+.spec-cell {
+  background: var(--bg); padding: 10px 12px;
+}
+.spec-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 3px; }
+.spec-val { font-size: 12px; font-weight: 600; color: var(--text); }
+
+/* ─── BUILD STEPS ─── */
+.build-steps {
+  margin-top: 12px;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+.bs-title { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.bs-list { list-style: none; padding: 0; }
+.bs-list li {
+  display: flex; gap: 10px; align-items: flex-start;
+  font-size: 12px; color: rgba(232,240,234,0.65);
+  padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+  line-height: 1.55;
+}
+.bs-list li:last-child { border-bottom: none; }
+.bs-n {
+  font-family: var(--mono); font-size: 9px; color: var(--muted);
+  flex-shrink: 0; padding-top: 2px; min-width: 18px;
+}
+.bs-list strong { color: var(--text); font-weight: 600; }
+
+/* ─── PARTNER ROW ─── */
+.partner-row {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px;
+}
+.partner-chip {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em;
+  padding: 3px 9px; border-radius: 4px; border: 1px solid var(--border-strong);
+  color: var(--muted);
+}
+
+/* ─── GAP TABLE ─── */
+.gap-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 12px; }
+.gap-table th {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--muted);
+  text-align: left; padding: 8px 12px;
+  border-bottom: 1px solid var(--border-strong);
+  background: var(--surface);
+}
+.gap-table td {
+  padding: 10px 12px; border-bottom: 1px solid var(--border);
+  vertical-align: top; line-height: 1.55; color: rgba(232,240,234,0.75);
+}
+.gap-table td:first-child { color: var(--text); font-weight: 600; }
+.gap-table tr:last-child td { border-bottom: none; }
+.sev { display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
+
+/* ─── INSIGHT BLOCK ─── */
+.insight {
+  border-left: 3px solid;
+  padding: 12px 14px;
+  border-radius: 0 8px 8px 0;
+  margin: 1.25rem 0;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.insight.green { border-color: var(--green); background: rgba(61,214,140,0.05); color: rgba(232,240,234,0.8); }
+.insight.amber { border-color: var(--amber); background: rgba(245,166,35,0.06); color: rgba(232,240,234,0.8); }
+.insight.red   { border-color: var(--red);   background: rgba(224,82,82,0.06);  color: rgba(232,240,234,0.8); }
+.insight.blue  { border-color: var(--blue);  background: rgba(91,155,213,0.07); color: rgba(232,240,234,0.8); }
+.insight strong { color: var(--text); font-weight: 600; }
+
+/* ─── REVENUE PLAN ─── */
+.rev-row {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 2fr;
+  gap: 8px; padding: 10px 0; border-bottom: 1px solid var(--border);
+  font-size: 12px; align-items: center;
+}
+.rev-row.hdr {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--muted); padding-bottom: 8px;
+}
+.rev-row:last-child { border-bottom: none; }
+.rv-name { color: var(--text); font-weight: 600; }
+.rv-amt { font-family: var(--mono); color: var(--green); }
+.rv-time { font-family: var(--mono); color: var(--muted); font-size: 11px; }
+.rv-how { color: rgba(232,240,234,0.6); }
+
+/* ─── SECTION DIVIDER ─── */
+.divider {
+  display: flex; align-items: center; gap: 16px;
+  margin: 2.5rem 0 1.5rem;
+}
+.div-line { flex: 1; height: 1px; background: var(--border); }
+.div-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--muted); white-space: nowrap;
+}
+
+/* ─── TRUTH BOX ─── */
+.truth-box {
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+.tb-head { font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
+.tb-body { font-family: var(--serif); font-size: 15px; color: rgba(232,240,234,0.85); line-height: 1.8; }
+.tb-body strong { color: var(--text); }
+
+/* ─── G2 ─── */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1rem 0; }
+
+/* ─── TIMELINE ─── */
+.timeline { list-style: none; padding: 0; margin: 1rem 0; }
+.tl-item {
+  display: flex; gap: 14px; padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+}
+.tl-item:last-child { border-bottom: none; }
+.tl-date {
+  font-family: var(--mono); font-size: 10px; color: var(--green);
+  flex-shrink: 0; min-width: 80px; padding-top: 2px;
+}
+.tl-title { font-weight: 700; color: var(--text); font-size: 13px; margin-bottom: 3px; }
+.tl-body { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+/* ─── HONESTY SECTION ─── */
+.warning-card {
+  background: rgba(224,82,82,0.06);
+  border: 1px solid rgba(224,82,82,0.2);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  margin: 1rem 0;
+}
+.wc-head { font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--red); margin-bottom: 8px; }
+.wc-body { font-size: 13px; color: rgba(232,240,234,0.7); line-height: 1.7; }
+.wc-body strong { color: var(--text); }
+
+@media (max-width: 640px) {
+  .spec-grid { grid-template-columns: 1fr 1fr; }
+  .g2 { grid-template-columns: 1fr; }
+  .rev-row { grid-template-columns: 1fr 1fr; }
+  .rev-row .rv-how { display: none; }
+  header { padding: 2rem 1.25rem 1.5rem; }
+  .wrap { padding: 0 1.25rem 4rem; }
+  h1 { font-size: 1.8rem; }
+  .phase-header { flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-tag">CREOVA Strategic Intelligence · April 2026</div>
+  <h1>The Plan to Fill<br>the <span>Climate Gap</span></h1>
+  <p class="header-desc">A research-grounded, sequenced strategy for what to build, in what order, with what architecture — closing the actual documented gaps in Africa's AI climate ecosystem. Honest. Specific. Executable.</p>
+  <div class="nav-pills">
+    <a class="nav-pill" href="#gaps">The 5 Gaps</a>
+    <a class="nav-pill" href="#phase1">Phase 1 — Now</a>
+    <a class="nav-pill" href="#phase2">Phase 2 — Scale</a>
+    <a class="nav-pill" href="#phase3">Phase 3 — System</a>
+    <a class="nav-pill" href="#revenue">Revenue Model</a>
+    <a class="nav-pill" href="#truth">Hard Truths</a>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- ═══════════════════════════════════ -->
+<!-- THE GAPS                           -->
+<!-- ═══════════════════════════════════ -->
+<div class="divider" id="gaps">
+  <div class="div-line"></div>
+  <div class="div-label">The 5 Documented Gaps</div>
+  <div class="div-line"></div>
+</div>
+
+<div class="truth-box">
+  <div class="tb-head">What the research actually says is missing</div>
+  <div class="tb-body">
+    The world has built the forecasting models. ICPAC, RiverMamba, and CNN deep learning now predict East African floods 2–3 seasons ahead. What doesn't exist is the <strong>infrastructure that translates those predictions into money, action, and protection for real people</strong> — in their language, through channels they actually use, before the disaster arrives. That is the gap. Everything below is built on that truth.
+  </div>
+</div>
+
+<table class="gap-table">
+  <thead>
+    <tr>
+      <th>Gap</th>
+      <th>Who suffers</th>
+      <th>Severity</th>
+      <th>What's missing</th>
+      <th>Evidence source</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Last-Mile Translation</td>
+      <td>65%+ of Africans in rural areas</td>
+      <td><span class="sev" style="background:var(--red);"></span> Critical</td>
+      <td>AI forecasts exist at national level; nothing reaches farmers in local languages via accessible channels</td>
+      <td>AIM for Scale COP30, UNECA 2026, Frontiers 2025</td>
+    </tr>
+    <tr>
+      <td>Climate Finance Delivery</td>
+      <td>Smallholder farmers, pastoralists</td>
+      <td><span class="sev" style="background:var(--red);"></span> Critical</td>
+      <td>$82M+ in anticipatory action funds exist but disbursement is slow, fragmented, paper-based, and doesn't reach the most vulnerable</td>
+      <td>OCHA Eastern Africa Report Dec 2025</td>
+    </tr>
+    <tr>
+      <td>Affordable MRV for Small Projects</td>
+      <td>Community forests, small agri projects</td>
+      <td><span class="sev" style="background:var(--amber);"></span> High</td>
+      <td>Traditional MRV costs $15,000–$30,000/project and consumes 25–40% of revenue — excluding all small African projects from carbon markets</td>
+      <td>ICVCM 2025, Spacenus SatMRV, Boomitra</td>
+    </tr>
+    <tr>
+      <td>Parametric Insurance Access</td>
+      <td>Smallholder farmers, pastoralists</td>
+      <td><span class="sev" style="background:var(--amber);"></span> High</td>
+      <td>Less than 5% of African farmers are insured. Products exist (ACRE Africa, Pula) but distribution, awareness, and affordability gaps are massive</td>
+      <td>IFC Africa Inclusive Insurance, RTI Kenya study 2026</td>
+    </tr>
+    <tr>
+      <td>Ground-Truth Climate Data</td>
+      <td>All AI forecasting models</td>
+      <td><span class="sev" style="background:var(--blue);"></span> Systemic</td>
+      <td>Weather station density is critically low. Satellite models can't validate accuracy. The community-level observational data that exists lives in farmer heads and paper notebooks</td>
+      <td>Amini CEO, IBM Research Africa, Climate Change AI</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════ -->
+<!-- PHASE 1                            -->
+<!-- ═══════════════════════════════════ -->
+<div class="divider" id="phase1">
+  <div class="div-line"></div>
+  <div class="div-label">Phase 1 · Build · Months 0–6</div>
+  <div class="div-line"></div>
+</div>
+
+<div class="phase">
+  <div class="phase-header">
+    <span class="phase-num">Phase 01</span>
+    <span class="phase-title">Prove the translation layer. Get to 1,000 farmers. Get first B2B contract.</span>
+    <span class="phase-badge badge-green">Now → Month 6</span>
+  </div>
+  <div class="phase-body">
+
+    <div class="insight green">
+      <strong>The strategic logic:</strong> You don't need to build a forecast model. You need to be the pipe that connects the best models in the world (ICPAC, WFP, FEWS NET — all free and public) to the people those models can't reach. This is a software and distribution play, not a science play. Lowest technical barrier. Highest real-world impact. Most defensible by local presence.
+    </div>
+
+    <!-- PRODUCT 1 -->
+    <div class="product-card pc-green">
+      <div class="pc-top">
+        <div class="pc-name">🌾 Hali ya Hewa — Swahili Climate Advisory</div>
+        <span class="pc-tag badge-green">Build First</span>
+      </div>
+      <div class="pc-tagline">"Hali ya Hewa" = "State of the Weather" in Swahili. A Swahili-first AI layer translating public climate forecasts into actionable farmer advisory — delivered via WhatsApp, USSD, and SMS.</div>
+      <div class="pc-body">
+        Pull ICPAC seasonal forecasts (free, public API), FEWS NET food security alerts, and local Tanzania Meteorological Authority data. Run through a lightweight AI layer (Claude Haiku or a fine-tuned open model) that translates complex forecast language into plain Swahili advice: "This season, plant sorghum instead of maize in Dodoma. Rain arrives 3 weeks late. Add 20% more water retention mulch." Deliver via WhatsApp Business API (most farmers already use it), USSD code, and SMS fallback for feature phones. Weekly push alerts per agroecological zone. Voice message option for low-literacy users. Crop-specific: maize, sorghum, cassava, beans, rice — Tanzania's top 5 smallholder crops.
+      </div>
+      <div class="spec-grid">
+        <div class="spec-cell">
+          <div class="spec-label">Tech Stack</div>
+          <div class="spec-val">WhatsApp + USSD + Claude API</div>
+        </div>
+        <div class="spec-cell">
+          <div class="spec-label">Data Sources</div>
+          <div class="spec-val">ICPAC (free), TMA, FEWS NET</div>
+        </div>
+        <div class="spec-cell">
+          <div class="spec-label">Languages</div>
+          <div class="spec-val">Swahili primary, English secondary</div>
+        </div>
+        <div class="spec-cell">
+          <div class="spec-label">Target Month 6</div>
+          <div class="spec-val">1,000 active farmers</div>
+        </div>
+      </div>
+      <div class="build-steps">
+        <div class="bs-title">Build Steps</div>
+        <ul class="bs-list">
+          <li><span class="bs-n">01</span><div><strong>Map agroecological zones</strong> across Tanzania's 5 major farming regions — Dodoma, Morogoro, Mbeya, Arusha, Shinyanga. Each zone gets a tailored crop calendar template.</div></li>
+          <li><span class="bs-n">02</span><div><strong>Set up ICPAC data pipeline</strong> — parse their seasonal forecast PDFs automatically every 3 months. This is the core intelligence layer. They publish every quarter for free.</div></li>
+          <li><span class="bs-n">03</span><div><strong>Build the translation engine</strong> — Claude Haiku takes the ICPAC technical output and generates a 3-sentence Swahili advisory per crop per zone. Test with 10 farmers. Iterate on language until they say "this is how we talk."</div></li>
+          <li><span class="bs-n">04</span><div><strong>WhatsApp Business API setup</strong> — register with Meta, set up automated message flows. Weekly advisory + opt-in alerts when ICPAC issues drought/flood warnings. Broadcast to registered farmers by zone.</div></li>
+          <li><span class="bs-n">05</span><div><strong>USSD code for feature phones</strong> — partner with Africa's Talking (Kenya-based, Tanzania coverage) for USSD short code. Simple menu: 1 = My crop advisory, 2 = Rain forecast, 3 = Flood alert.</div></li>
+          <li><span class="bs-n">06</span><div><strong>Pilot with 50 farmers</strong> in one district (recommendation: Dodoma — drought-prone, high climate risk, active agricultural NGO presence). Run for one full growing season (3–4 months). Measure: did they change planting decisions? Did yields improve?</div></li>
+          <li><span class="bs-n">07</span><div><strong>Expand to 1,000 farmers</strong> across 3 zones. This is the number you need to show NGO and donor partners that the system works at scale before asking for a B2B contract.</div></li>
+        </ul>
+      </div>
+      <div class="partner-row">
+        <span class="partner-chip">Africa's Talking (USSD/SMS API)</span>
+        <span class="partner-chip">Meta WhatsApp Business API</span>
+        <span class="partner-chip">ICPAC (data — free)</span>
+        <span class="partner-chip">Tanzania Met Authority</span>
+        <span class="partner-chip">FEWS NET (data — free)</span>
+        <span class="partner-chip">Local NGO for farmer recruitment</span>
+      </div>
+    </div>
+
+    <!-- PRODUCT 2 -->
+    <div class="product-card pc-amber">
+      <div class="pc-top">
+        <div class="pc-name">📡 Community Climate Ledger — Ground Truth Data Collection</div>
+        <span class="pc-tag badge-amber">Build Alongside</span>
+      </div>
+      <div class="pc-tagline">The data Africa's AI models are missing. Farmers log what they observe. You build the ground-truth dataset that makes every model more accurate.</div>
+      <div class="pc-body">
+        <strong>The insight from research:</strong> Africa is data-dark not because nothing is happening, but because farmer observations never get digitized. Every farmer knows when the rains came, how much, what happened to their crops. That knowledge exists and then disappears. Build a simple USSD/WhatsApp flow where farmers log weekly observations — rainfall (none/light/moderate/heavy), temperature (hot/normal/cold), crop stress signs (wilting/yellowing/normal). Takes 30 seconds. Over a full season, 1,000 farmers generate a hyperlocal ground-truth dataset that no satellite can produce. This data becomes your moat. You sell it to Amini, IBM Research, CGIAR, and insurance companies. You also feed it back to improve your own Hali ya Hewa advisory system. The more farmers log, the smarter the advice gets — a virtuous loop.
+      </div>
+      <div class="spec-grid">
+        <div class="spec-cell">
+          <div class="spec-label">Input Method</div>
+          <div class="spec-val">USSD + WhatsApp voice/text</div>
+        </div>
+        <div class="spec-cell">
+          <div class="spec-label">Frequency</div>
+          <div class="spec-val">Weekly per farmer (30 sec)</div>
+        </div>
+        <div class="spec-cell">
+          <div class="spec-label">Output</div>
+          <div class="spec-val">Structured JSON → database</div>
+        </div>
+        <div class="spec-cell">
+          <div class="spec-label">Value</div>
+          <div class="spec-val">Sold to Amini, insurers, CGIAR</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- PHASE 2                            -->
+<!-- ═══════════════════════════════════ -->
+<div class="divider" id="phase2">
+  <div class="div-line"></div>
+  <div class="div-label">Phase 2 · Scale · Months 6–18</div>
+  <div class="div-line"></div>
+</div>
+
+<div class="phase">
+  <div class="phase-header">
+    <span class="phase-num">Phase 02</span>
+    <span class="phase-title">Add financial products. Close B2B deals. Reach 50,000 farmers and first revenue.</span>
+    <span class="phase-badge badge-amber">Month 6 → Month 18</span>
+  </div>
+  <div class="phase-body">
+
+    <div class="insight amber">
+      <strong>The strategic shift:</strong> Phase 1 builds trust and data. Phase 2 monetizes them. You layer climate-linked financial products on top of your advisory relationships — because a farmer who already trusts your weather advice is the easiest possible customer for climate insurance. This is the Safaricom playbook: earn trust with a communication service, then sell financial products on the same rails.
+    </div>
+
+    <!-- PRODUCT 3 -->
+    <div class="product-card pc-amber">
+      <div class="pc-top">
+        <div class="pc-name">🛡️ Hifadhi ya Hali ya Hewa — Parametric Climate Insurance Layer</div>
+        <span class="pc-tag badge-amber">Phase 2 Core</span>
+      </div>
+      <div class="pc-tagline">"Hifadhi ya Hali ya Hewa" = "Climate Protection." Parametric micro-insurance bundled directly into your farmer advisory platform — auto-triggered by the same ICPAC data you already use.</div>
+      <div class="pc-body">
+        <strong>What the research proves this can work:</strong> Less than 5% of African farmers are insured, but Kenya is introducing new Index Insurance Regulations (2025) requiring 10-day claim settlement. ACRE Africa has proven the model — 5M+ farmers insured across East Africa. The gap is the <em>last mile</em>: distribution, awareness, and enrollment. You already have that through Hali ya Hewa. The product: farmers pay TZS 5,000–15,000/season (~$2–$6) for automatic payout when ICPAC data shows rainfall falls below a drought threshold for their zone. No claim needed. No paperwork. The trigger is the same seasonal forecast you're already reading. Payout goes to M-Pesa or Airtel Money instantly.
+        <br><br>
+        <strong>How to build this without an insurance license:</strong> Partner with an underwriter (ACRE Africa has Tanzania operations, Jubilee Insurance Tanzania, or UAP Insurance Tanzania). You are the distribution and technology layer. They carry the risk. You take a distribution fee (typically 10–20% of premium) for every farmer enrolled. This is the model that Pula, ACRE Africa, and Ibisa all use — technology company + insurance company partnership.
+      </div>
+      <div class="spec-grid">
+        <div class="spec-cell">
+          <div class="spec-label">Premium</div>
+          <div class="spec-val">TZS 5k–15k/season</div>
+        </div>
+        <div class="spec-cell">
+          <div class="spec-label">Trigger</div>
+          <div class="spec-val">ICPAC drought/flood index</div>
+        </div>
+        <div class="spec-cell">
+          <div class="spec-label">Payout</div>
+          <div class="spec-val">Mobile money, auto, 10 days</div>
+        </div>
+        <div class="spec-cell">
+          <div class="spec-label">Your Revenue</div>
+          <div class="spec-val">10–20% distribution fee</div>
+        </div>
+      </div>
+      <div class="build-steps">
+        <div class="bs-title">How to Get There</div>
+        <ul class="bs-list">
+          <li><span class="bs-n">01</span><div><strong>Approach ACRE Africa Tanzania or Jubilee Insurance</strong> with your farmer data: "We have 1,000 registered farmers with geo-tagged field observations. We want to white-label your parametric drought product and distribute via our platform." This is a standard channel partnership — they've done it with agro-dealers, input suppliers, and mobile networks.</div></li>
+          <li><span class="bs-n">02</span><div><strong>Design the enrollment flow:</strong> When Hali ya Hewa sends the pre-season advisory, it includes a single line: "This season has above-average drought risk. Enroll in drought protection for TZS 8,000. Reply YES." Payment via USSD/M-Pesa. Enrollment done in 60 seconds.</div></li>
+          <li><span class="bs-n">03</span><div><strong>Set drought triggers</strong> with the insurance partner using ICPAC zone data — the same data your advisory already uses. When cumulative rainfall for the season falls below threshold X for zone Y, payout fires automatically to all enrolled farmers in that zone. No individual claims, no assessment visits.</div></li>
+          <li><span class="bs-n">04</span><div><strong>Track payout events</strong> and use them as marketing: "127 farmers in Dodoma received TZS 45,000 each after last season's drought. You were on the list." This is your most powerful growth mechanism — real stories of real payouts spread faster than any ad.</div></li>
+        </ul>
+      </div>
+      <div class="partner-row">
+        <span class="partner-chip">ACRE Africa (underwriter partner)</span>
+        <span class="partner-chip">Jubilee Insurance Tanzania</span>
+        <span class="partner-chip">UAP Insurance Tanzania</span>
+        <span class="partner-chip">M-Pesa (payout rails)</span>
+        <span class="partner-chip">IFC Africa Inclusive Insurance Program</span>
+      </div>
+    </div>
+
+    <!-- PRODUCT 4 -->
+    <div class="product-card pc-blue">
+      <div class="pc-top">
+        <div class="pc-name">💰 Anticipatory Cash API — Pre-Disaster Finance Delivery</div>
+        <span class="pc-tag badge-blue">B2B / Institutional</span>
+      </div>
+      <div class="pc-tagline">Sell your farmer registry and mobile money rails to WFP, Red Cross, and NGOs as the last-mile delivery infrastructure for pre-disaster cash transfers.</div>
+      <div class="pc-body">
+        <strong>The gap:</strong> WFP disbursed $82M in anticipatory action funds across Eastern Africa in 2024–2025 — but the infrastructure to get that money to the most vulnerable people before a disaster is fragmented and slow. WFP is building this; Denmark just funded a $40M AI anticipatory action project in Ethiopia, Rwanda, and Uganda. Tanzania is the next expansion country.
+        <br><br>
+        <strong>What you offer:</strong> A registered, verified, geo-tagged farmer database with mobile money accounts attached — ready to receive pre-disaster cash transfers the moment a forecast threshold is crossed. You become the "last mile" delivery rails. WFP/Red Cross pays you a per-transfer fee ($1–3/transaction) or a data access fee for your farmer registry. The integration: when ICPAC drought probability for zone X exceeds 65% (the anticipatory action trigger), an automated API call distributes TZS 50,000 to every registered farmer in zone X within 24 hours. No field teams. No paperwork. No delays.
+        <br><br>
+        <strong>Your pitch to WFP East Africa:</strong> "We have 5,000 registered farmers in drought-risk zones with verified mobile money accounts. We can deploy anticipatory cash in under 24 hours from forecast trigger. Here is our system documentation and a 500-farmer pilot proposal."
+      </div>
+      <div class="spec-grid">
+        <div class="spec-cell">
+          <div class="spec-label">Client</div>
+          <div class="spec-val">WFP, Red Cross, OCHA</div>
+        </div>
+        <div class="spec-cell">
+          <div class="spec-label">Revenue Model</div>
+          <div class="spec-val">Per-transfer fee + data license</div>
+        </div>
+        <div class="spec-cell">
+          <div class="spec-label">Trigger</div>
+          <div class="spec-val">ICPAC forecast threshold API</div>
+        </div>
+        <div class="spec-cell">
+          <div class="spec-label">Delivery Speed</div>
+          <div class="spec-val">&lt;24 hours from trigger</div>
+        </div>
+      </div>
+      <div class="partner-row">
+        <span class="partner-chip">WFP East Africa (Dar es Salaam office)</span>
+        <span class="partner-chip">Red Cross Tanzania</span>
+        <span class="partner-chip">OCHA</span>
+        <span class="partner-chip">Africa's Talking (payment API)</span>
+        <span class="partner-chip">Vodacom M-Pesa Tanzania</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- PHASE 3                            -->
+<!-- ═══════════════════════════════════ -->
+<div class="divider" id="phase3">
+  <div class="div-line"></div>
+  <div class="div-label">Phase 3 · System · Months 18–48</div>
+  <div class="div-line"></div>
+</div>
+
+<div class="phase">
+  <div class="phase-header">
+    <span class="phase-num">Phase 03</span>
+    <span class="phase-title">Carbon MRV platform. Kenya expansion. Regional climate data infrastructure.</span>
+    <span class="phase-badge badge-blue">Month 18 → Month 48</span>
+  </div>
+  <div class="phase-body">
+
+    <div class="insight blue">
+      <strong>The long game:</strong> By month 18, you have a farmer registry, ground-truth climate data, and relationships with insurers and humanitarian agencies. Phase 3 turns that infrastructure into the hardest-to-replicate asset in East African climate tech — an Africa-owned, community-verified carbon MRV platform and regional climate data business. This is where the serious money is.
+    </div>
+
+    <!-- PRODUCT 5 -->
+    <div class="product-card pc-blue">
+      <div class="pc-top">
+        <div class="pc-name">🌍 Dhibiti Carbon — Affordable MRV for Small African Projects</div>
+        <span class="pc-tag badge-blue">Phase 3 Core</span>
+      </div>
+      <div class="pc-tagline">"Dhibiti" = "Manage/Control" in Swahili. An AI-powered, satellite-backed MRV platform designed specifically for small African carbon projects that have been excluded by cost.</div>
+      <div class="pc-body">
+        <strong>The gap is real and quantified:</strong> Traditional MRV costs $15,000–$30,000 per project and consumes 25–40% of carbon revenue. Verification delays could cost African project developers $2.6B by 2030 (ICVCM). Small community forestry projects, agroforestry schemes, and smallholder soil carbon programs — which represent the majority of Africa's potential carbon stock — are locked out. Boomitra is the closest competitor and is already Verra-registered for East Africa croplands. The gap is in the <em>community-level enrollment and field data collection</em> layer — building on your existing farmer network.
+        <br><br>
+        <strong>What you build:</strong> A mobile-first MRV platform — farmers photograph their plots quarterly, GPS-tag field boundaries, and log practice changes (no-till, cover cropping, agroforestry additions). Your system fuses this with satellite imagery (Sentinel-2 is free), runs AI-based biomass and soil carbon estimation models, and generates Verra/Gold Standard-compliant MRV reports automatically. The cost to the project developer drops from $15,000 to under $500. You charge per tonne of CO₂ verified (0.5–1%) or a flat SaaS fee per project.
+        <br><br>
+        <strong>Your unfair advantage:</strong> By month 18 you already have 10,000+ farmers with phone numbers, geo-tagged locations, and seasonal observation habits. Every one of them is a potential MRV data point. Your cost of enrollment is near zero. Nobody building MRV from scratch has that.
+      </div>
+      <div class="spec-grid">
+        <div class="spec-cell">
+          <div class="spec-label">Satellite Data</div>
+          <div class="spec-val">Sentinel-2 (free ESA)</div>
+        </div>
+        <div class="spec-cell">
+          <div class="spec-label">Standards</div>
+          <div class="spec-val">Verra VCS, Gold Standard</div>
+        </div>
+        <div class="spec-cell">
+          <div class="spec-label">Cost vs. Traditional</div>
+          <div class="spec-val">$500 vs. $15,000–$30,000</div>
+        </div>
+        <div class="spec-cell">
+          <div class="spec-label">Revenue Model</div>
+          <div class="spec-val">SaaS + per-tonne fee</div>
+        </div>
+      </div>
+      <div class="build-steps">
+        <div class="bs-title">Path to Market</div>
+        <ul class="bs-list">
+          <li><span class="bs-n">01</span><div><strong>Partner with Boomitra or a Verra-approved VVB (Validation & Verification Body)</strong> to become a data collection and pre-processing partner. You don't need your own methodology — you need to be the on-the-ground data layer that feeds into an approved system.</div></li>
+          <li><span class="bs-n">02</span><div><strong>Run 3 pilot MRV projects</strong> with community forestry groups or agroforestry cooperatives in Tanzania (Kilimanjaro region is strong for this — active NGO scene, tree cover, smallholder agroforestry traditions).</div></li>
+          <li><span class="bs-n">03</span><div><strong>Register with ICVCM's Continuous Improvement Work Program</strong> on digital MRV — they are actively looking for implementation partners in Africa. This is a direct pathway to credibility with carbon market buyers.</div></li>
+          <li><span class="bs-n">04</span><div><strong>Sell to project developers first,</strong> not carbon buyers. The project developer market (NGOs, community forest groups, agro-enterprises) needs MRV before they can access carbon revenue. You solve their problem. They bring the carbon credits to market.</div></li>
+        </ul>
+      </div>
+      <div class="partner-row">
+        <span class="partner-chip">Boomitra (East Africa MRV partner)</span>
+        <span class="partner-chip">Verra (standard body)</span>
+        <span class="partner-chip">ICVCM Digital MRV Working Group</span>
+        <span class="partner-chip">ESA Sentinel-2 (free satellite data)</span>
+        <span class="partner-chip">Tanzanian Carbon Market Forum</span>
+        <span class="partner-chip">Eastern Africa Carbon Alliance</span>
+      </div>
+    </div>
+
+    <!-- PRODUCT 6 -->
+    <div class="product-card pc-green" style="border-top-color:var(--green);">
+      <div class="pc-top">
+        <div class="pc-name">🔬 Climate Data API — Sell Ground Truth to the World</div>
+        <span class="pc-tag badge-green">Revenue Layer</span>
+      </div>
+      <div class="pc-tagline">By year 2–3, you own something nobody else has: 50,000+ hyperlocal seasonal observations from Tanzania's smallholder farming zones, structured, clean, and AI-ready.</div>
+      <div class="pc-body">
+        Amini raised $6M to solve Africa's environmental data scarcity. IBM Research is building hybrid cloud platforms because Africa's climate data is low-resolution. CGIAR is paying for ground-truth validation of satellite models. Insurance companies need hyperlocal loss data. By the time you reach Phase 3, your farmer observation database is worth real money to every one of these players. Build a simple API — authenticated access to your structured ground-truth dataset for a monthly or annual license fee. Tiered pricing: academic/NGO access at low cost, commercial (insurers, Amini, IBM) at market rate. This becomes passive revenue on data you're already collecting through your advisory platform.
+      </div>
+      <div class="spec-grid">
+        <div class="spec-cell">
+          <div class="spec-label">Data Type</div>
+          <div class="spec-val">Hyperlocal seasonal observations</div>
+        </div>
+        <div class="spec-cell">
+          <div class="spec-label">Coverage</div>
+          <div class="spec-val">50k+ farms, Tanzania → Kenya</div>
+        </div>
+        <div class="spec-cell">
+          <div class="spec-label">Buyers</div>
+          <div class="spec-val">Amini, IBM, CGIAR, insurers</div>
+        </div>
+        <div class="spec-cell">
+          <div class="spec-label">Revenue</div>
+          <div class="spec-val">API licensing, $5k–$50k/yr</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- REVENUE MODEL                      -->
+<!-- ═══════════════════════════════════ -->
+<div class="divider" id="revenue">
+  <div class="div-line"></div>
+  <div class="div-label">Revenue Architecture</div>
+  <div class="div-line"></div>
+</div>
+
+<div class="insight amber">
+  <strong>Key principle:</strong> Each phase must be self-funding or grant-fundable before you build the next. Phase 1 is cheap enough to bootstrap or get a $15k–$50k climate innovation grant. Phase 2 generates revenue that funds Phase 3. Never build ahead of proof.
+</div>
+
+<div style="margin:1.5rem 0;">
+  <div class="rev-row hdr">
+    <span>Revenue Stream</span><span>When</span><span>Est. Scale</span><span>How It Works</span>
+  </div>
+  <div class="rev-row">
+    <span class="rv-name">Climate Grant / Pilot Funding</span>
+    <span class="rv-time">Month 0–6</span>
+    <span class="rv-amt">$15k–$50k</span>
+    <span class="rv-how">Apply to AICCRA, CGIAR Climate Innovation, Equator Africa Fund, Adaptation Fund. Hali ya Hewa pilots are exactly what they fund. One grant covers your first 6 months.</span>
+  </div>
+  <div class="rev-row">
+    <span class="rv-name">NGO / Government B2B Advisory License</span>
+    <span class="rv-time">Month 4–9</span>
+    <span class="rv-amt">$2k–$15k/yr per client</span>
+    <span class="rv-how">Sell white-labeled Hali ya Hewa to agricultural NGOs, Tanzania Ministry of Agriculture extension services, or county/district agricultural offices as their official farmer advisory channel.</span>
+  </div>
+  <div class="rev-row">
+    <span class="rv-name">Insurance Distribution Fee</span>
+    <span class="rv-time">Month 9–18</span>
+    <span class="rv-amt">10–20% of premium</span>
+    <span class="rv-how">For every farmer enrolled in parametric climate insurance through your platform, you earn a distribution commission. At 5,000 farmers paying TZS 10,000/season: ~$8,500/season before commission, ~$850–$1,700 to you. Scales with farmer count.</span>
+  </div>
+  <div class="rev-row">
+    <span class="rv-name">Anticipatory Cash Delivery Fee</span>
+    <span class="rv-time">Month 12–24</span>
+    <span class="rv-amt">$1–$3/transfer</span>
+    <span class="rv-how">WFP, Red Cross, and OCHA pay per cash transfer delivered through your farmer registry rails. At 10,000 transfers per activation event: $10,000–$30,000 per disaster event. Multiple events per year in East Africa.</span>
+  </div>
+  <div class="rev-row">
+    <span class="rv-name">Ground Truth Data API</span>
+    <span class="rv-time">Month 18–36</span>
+    <span class="rv-amt">$5k–$50k/yr per client</span>
+    <span class="rv-how">License your structured farmer observation database to Amini, IBM Research, agricultural insurance companies, and CGIAR research programs. Passive revenue on data already collected.</span>
+  </div>
+  <div class="rev-row">
+    <span class="rv-name">Carbon MRV SaaS</span>
+    <span class="rv-time">Month 24–48</span>
+    <span class="rv-amt">$500–$2k/project + per-tonne</span>
+    <span class="rv-how">Charge small African carbon project developers for AI-powered, satellite-backed MRV reports. 0.5% of carbon value verified. African voluntary carbon market worth $1.2B now, projected $1.5T by 2050.</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- MASTER TIMELINE                    -->
+<!-- ═══════════════════════════════════ -->
+<div class="divider">
+  <div class="div-line"></div>
+  <div class="div-label">Master Execution Timeline</div>
+  <div class="div-line"></div>
+</div>
+
+<ul class="timeline">
+  <li class="tl-item">
+    <span class="tl-date">Month 1</span>
+    <div>
+      <div class="tl-title">Set up data pipelines + advisory engine</div>
+      <div class="tl-body">ICPAC data parser live. Claude Haiku translation layer configured. WhatsApp Business API registered. Test with 10 farmers in your network in Tanzania. Refine language until feedback says "this is how we talk."</div>
+    </div>
+  </li>
+  <li class="tl-item">
+    <span class="tl-date">Month 2–3</span>
+    <div>
+      <div class="tl-title">50-farmer pilot — one district, one season</div>
+      <div class="tl-body">Run a full growing season with 50 farmers in Dodoma or Morogoro. Weekly advisory push. Community Climate Ledger logging activated — farmers report weekly observations. Document everything: what changed, what didn't, what confused them.</div>
+    </div>
+  </li>
+  <li class="tl-item">
+    <span class="tl-date">Month 3–4</span>
+    <div>
+      <div class="tl-title">Apply for first grant + approach first NGO partner</div>
+      <div class="tl-body">Use pilot results as evidence. Apply to AICCRA Small Grants, Adaptation Fund Innovation Grants, or Equator Africa Fund. Simultaneously approach 3 agricultural NGOs in Tanzania about a paid B2B partnership for farmer advisory services.</div>
+    </div>
+  </li>
+  <li class="tl-item">
+    <span class="tl-date">Month 5–6</span>
+    <div>
+      <div class="tl-title">Expand to 1,000 farmers — 3 zones</div>
+      <div class="tl-body">Dodoma (drought), Morogoro (flood), Arusha (mixed). Each zone has its own crop calendar and advisory template. USSD code live alongside WhatsApp for feature-phone users. Community Climate Ledger generating first structured dataset.</div>
+    </div>
+  </li>
+  <li class="tl-item">
+    <span class="tl-date">Month 7–9</span>
+    <div>
+      <div class="tl-title">Close first B2B contract + initiate insurance partnership</div>
+      <div class="tl-body">First NGO or government body pays for the advisory service. Begin formal conversations with ACRE Africa Tanzania or Jubilee Insurance about parametric product distribution. Approach WFP East Africa Dar es Salaam office with anticipatory cash delivery pilot proposal.</div>
+    </div>
+  </li>
+  <li class="tl-item">
+    <span class="tl-date">Month 10–14</span>
+    <div>
+      <div class="tl-title">Parametric insurance live — first season enrollment</div>
+      <div class="tl-body">Launch insurance enrollment through Hali ya Hewa platform for the planting season. Target: 500 farmers enrolled in first season. Measure enrollment rate, payout events, farmer satisfaction. If a drought trigger fires: the first automatic payout is the proof of concept that sells the next 5,000 farmers.</div>
+    </div>
+  </li>
+  <li class="tl-item">
+    <span class="tl-date">Month 15–18</span>
+    <div>
+      <div class="tl-title">Kenya pilot + WFP anticipatory cash pilot</div>
+      <div class="tl-body">Expand Hali ya Hewa to one Kenya county (Kitui — extreme drought risk, strong NGO presence). Run a 200-farmer anticipatory cash pilot with WFP or Red Cross. First data API conversations with Amini and CGIAR.</div>
+    </div>
+  </li>
+  <li class="tl-item">
+    <span class="tl-date">Month 18–30</span>
+    <div>
+      <div class="tl-title">50,000 farmers — Tanzania + Kenya. Carbon MRV pilot.</div>
+      <div class="tl-body">Scale advisory platform to 50,000 farmers across Tanzania and Kenya with full insurance enrollment option. Begin 3 carbon MRV pilot projects with community forestry groups. First data API license signed with a commercial buyer.</div>
+    </div>
+  </li>
+  <li class="tl-item">
+    <span class="tl-date">Month 30–48</span>
+    <div>
+      <div class="tl-title">Dhibiti Carbon live. Regional expansion to Uganda/Rwanda.</div>
+      <div class="tl-body">Dhibiti Carbon MRV platform commercially launched — first African projects generating carbon credits through your system. Expand into Uganda and Rwanda using the Tanzania playbook. Series A fundraise if trajectory warrants it.</div>
+    </div>
+  </li>
+</ul>
+
+<!-- ═══════════════════════════════════ -->
+<!-- KEY PARTNERSHIPS                   -->
+<!-- ═══════════════════════════════════ -->
+<div class="divider">
+  <div class="div-line"></div>
+  <div class="div-label">The 10 Partnerships That Make This Work</div>
+  <div class="div-line"></div>
+</div>
+
+<div class="g2">
+  <div class="product-card pc-green">
+    <div class="pc-name" style="margin-bottom:8px;">🌐 Data Partners (Free)</div>
+    <ul class="bs-list">
+      <li><span class="bs-n">→</span><div><strong>ICPAC</strong> — East Africa seasonal forecasts, publicly available quarterly. The backbone of all your advisory content.</div></li>
+      <li><span class="bs-n">→</span><div><strong>FEWS NET</strong> — Food security and drought monitoring alerts, free API.</div></li>
+      <li><span class="bs-n">→</span><div><strong>Tanzania Meteorological Authority (TMA)</strong> — Formal relationship to co-brand advisories gives you institutional credibility.</div></li>
+      <li><span class="bs-n">→</span><div><strong>ESA Sentinel-2</strong> — Free satellite imagery for MRV and crop monitoring. 10m resolution, 5-day revisit cycle.</div></li>
+    </ul>
+  </div>
+  <div class="product-card pc-amber">
+    <div class="pc-name" style="margin-bottom:8px;">🏦 Finance & Insurance Partners</div>
+    <ul class="bs-list">
+      <li><span class="bs-n">→</span><div><strong>ACRE Africa</strong> — Already active in Tanzania. Proven parametric products. Approach for distribution partnership.</div></li>
+      <li><span class="bs-n">→</span><div><strong>WFP East Africa</strong> — Dar es Salaam office is the anticipatory action hub for Tanzania. They need implementation partners.</div></li>
+      <li><span class="bs-n">→</span><div><strong>IFC Africa Inclusive Insurance Program</strong> — 15-country program actively seeking distribution partners for climate micro-insurance.</div></li>
+      <li><span class="bs-n">→</span><div><strong>One Acre Fund Tanzania</strong> — Already bundles insurance with inputs for 300,000+ farmers. Your advisory layer could integrate with their system.</div></li>
+    </ul>
+  </div>
+  <div class="product-card pc-blue">
+    <div class="pc-name" style="margin-bottom:8px;">💻 Technology Partners</div>
+    <ul class="bs-list">
+      <li><span class="bs-n">→</span><div><strong>Africa's Talking</strong> — USSD, SMS, and voice API provider with Tanzania coverage. Used by every serious East Africa mobile tech company.</div></li>
+      <li><span class="bs-n">→</span><div><strong>Anthropic Claude API</strong> — Your translation engine. Use Haiku for cost efficiency ($0.80/M tokens vs. GPT-4 at $30). Fine-tune on Swahili agricultural vocabulary.</div></li>
+    </ul>
+  </div>
+  <div class="product-card" style="border-top:2px solid var(--green);">
+    <div class="pc-name" style="margin-bottom:8px;">🎓 Research & Validation Partners</div>
+    <ul class="bs-list">
+      <li><span class="bs-n">→</span><div><strong>CGIAR / AICCRA</strong> — Validate your advisory content scientifically. They fund exactly this kind of climate information service work in East Africa.</div></li>
+      <li><span class="bs-n">→</span><div><strong>University of Dar es Salaam</strong> — Partner for Swahili language model validation and agronomic content review. Gives you academic credibility in Tanzania.</div></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- HARD TRUTHS                        -->
+<!-- ═══════════════════════════════════ -->
+<div class="divider" id="truth">
+  <div class="div-line"></div>
+  <div class="div-label">Hard Truths — What Could Kill This</div>
+  <div class="div-line"></div>
+</div>
+
+<div class="warning-card">
+  <div class="wc-head">Risk 1 — Farmer Adoption Is Slower Than You Expect</div>
+  <div class="wc-body">Every agricultural tech company in Africa overestimates adoption speed. <strong>KilimoAI took 2+ years to reach 63,000 farmers.</strong> Ulangizi in Malawi has thousands of users but needed sustained in-person farmer recruitment to get there. Plan for 6–9 months to get to 1,000 genuine active users, not just registered numbers. "Active" means they actually change a farming decision based on your advisory — not just that they received a message. Build this metric into your pilot design from day one.</div>
+</div>
+
+<div class="warning-card">
+  <div class="wc-head">Risk 2 — The Insurance Basis Risk Problem</div>
+  <div class="wc-body"><strong>Basis risk is the technical name for "farmer doesn't get paid even though their crop failed."</strong> It happens when the index trigger (ICPAC zone-level rainfall) doesn't match what actually happened on an individual farm. This erodes trust faster than anything else in the market. Kenya's IRA is proposing 10-day payout rules precisely because delayed or missed payouts have killed programs before. Mitigate this by: (a) being transparent about how triggers work, (b) choosing very drought-obvious zones for early pilots, (c) only selling insurance alongside advisory — farmers who trust your weather advice are more likely to accept that a missed payout reflects the index, not fraud.</div>
+</div>
+
+<div class="warning-card">
+  <div class="wc-head">Risk 3 — You Are Not A Broadcaster, You Are A Farmer Relationship Business</div>
+  <div class="wc-body"><strong>The research is unambiguous: last-mile delivery fails when it's purely digital.</strong> Ulangizi needed in-person demos. Rada360 used local agronomy champions. KilimoAI has weekly field visits. The platform is the infrastructure. The relationship is the product. You need a small network of trusted local agricultural extension agents or farmer group leaders in each zone who champion your service, teach less-literate farmers how to use it, and give you the ground-level feedback that makes your advisory actually accurate. Budget for this. It's not a technology cost — it's a human cost.</div>
+</div>
+
+<div class="warning-card">
+  <div class="wc-head">Risk 4 — Carbon MRV Is 2+ Years From Revenue</div>
+  <div class="wc-body"><strong>Do not build Dhibiti Carbon in Phase 1 or 2.</strong> Carbon MRV requires Verra/Gold Standard methodology approval processes that take 12–24 months, technical partnerships with certified verification bodies, and an established farmer database to make the unit economics work. It is a Phase 3 product. If you try to build it early, you'll dilute the focus that Hali ya Hewa needs to succeed. The sequence matters more than the ambition.</div>
+</div>
+
+<div class="warning-card">
+  <div class="wc-head">Risk 5 — CREOVA Is Halton Hills, Not Dar es Salaam</div>
+  <div class="wc-body"><strong>You are building for farmers you cannot easily visit.</strong> This is the hardest constraint. Rada360, KilimoAI, and MazaoHub all succeed because their founders are physically present — conducting weekly field visits, running farmer training events, responding to on-the-ground signals. You need a trusted in-country partner or team member in Tanzania who is your eyes, ears, and relationship engine. This person is more important than any API you build. Identify them before you build anything. Brock University has academic partnerships in East Africa — start there.</div>
+</div>
+
+<!-- FINAL CLARITY BOX -->
+<div class="truth-box" style="margin-top:2.5rem;">
+  <div class="tb-head">The One-Page Summary</div>
+  <div class="tb-body">
+    You are not building a satellite. You are not training a new AI model. You are building <strong>the translation layer, the delivery rails, and the financial protection system</strong> that connects Africa's best climate science to the 65% of Africans who live in rural areas and currently receive none of it.
+    <br><br>
+    Phase 1: <strong>Hali ya Hewa</strong> — Swahili AI advisory, WhatsApp + USSD, 1,000 farmers, one grant, one B2B client.
+    <br>
+    Phase 2: <strong>Hifadhi + Anticipatory Cash</strong> — Insurance distribution and pre-disaster finance delivery on your existing rails.
+    <br>
+    Phase 3: <strong>Dhibiti Carbon + Data API</strong> — The data moat becomes the revenue moat.
+    <br><br>
+    The competitive advantage is not technology — it is <strong>being African, building African, and being in the room</strong> when ICPAC, WFP, and ACRE Africa are looking for a local partner who speaks Swahili, understands East African agroecology, and has already proven that farmers will change their behavior based on what you send them.
+    <br><br>
+    That is the gap. That is the plan.
+  </div>
+</div>
+
+</div><!-- /.wrap -->
+
+</body>
+</html>

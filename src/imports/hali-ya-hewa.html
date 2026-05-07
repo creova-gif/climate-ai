@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hali ya Hewa — Climate Advisory Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F2F0EB;
+  --surface: #FFFFFF;
+  --surface2: #F8F6F1;
+  --border: #E2DDD6;
+  --border2: #D0CAC0;
+  --ink: #1A1714;
+  --ink2: #4A443D;
+  --ink3: #8A837A;
+  --green: #1F6B3E;
+  --green-light: #E8F5EE;
+  --green-mid: #3A9E62;
+  --amber: #B8660A;
+  --amber-light: #FEF3E3;
+  --red: #C0392B;
+  --red-light: #FDECEA;
+  --blue: #1A5280;
+  --blue-light: #E8F0F8;
+  --sky: #2E86C1;
+  --sans: 'Plus Jakarta Sans', sans-serif;
+  --noto: 'Noto Sans', sans-serif;
+  --mono: 'Space Mono', monospace;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 1px 3px rgba(26,23,20,0.08), 0 4px 16px rgba(26,23,20,0.04);
+  --shadow-lg: 0 4px 24px rgba(26,23,20,0.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  background: var(--bg);
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--ink);
+  display: flex;
+  height: 100vh;
+}
+
+/* ═══ SIDEBAR ═══ */
+.sidebar {
+  width: 220px;
+  min-width: 220px;
+  background: var(--ink);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+}
+.sidebar::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 200px;
+  background: linear-gradient(to top, rgba(31,107,62,0.15), transparent);
+  pointer-events: none;
+}
+.sidebar-logo {
+  padding: 20px 18px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.logo-mark {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 4px;
+}
+.logo-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: var(--green-mid);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.logo-text { font-size: 15px; font-weight: 800; color: #fff; letter-spacing: -0.01em; }
+.logo-sub { font-family: var(--mono); font-size: 9px; color: rgba(255,255,255,0.35); letter-spacing: 0.1em; text-transform: uppercase; }
+
+.nav { padding: 12px 10px; flex: 1; }
+.nav-section-label {
+  font-family: var(--mono); font-size: 8px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: rgba(255,255,255,0.25);
+  padding: 8px 8px 4px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 8px; border-radius: var(--radius-sm);
+  cursor: pointer; color: rgba(255,255,255,0.55);
+  font-size: 13px; font-weight: 500;
+  transition: all 0.15s; margin-bottom: 1px;
+  border: none; background: none; width: 100%; text-align: left;
+}
+.nav-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.85); }
+.nav-item.active { background: rgba(58,158,98,0.2); color: #fff; }
+.nav-item.active .nav-icon { color: var(--green-mid); }
+.nav-icon { font-size: 15px; width: 18px; text-align: center; }
+.nav-badge {
+  margin-left: auto; background: var(--green-mid); color: #fff;
+  font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 10px;
+}
+.nav-badge.red { background: var(--red); }
+
+.sidebar-footer {
+  padding: 12px 10px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.season-chip {
+  background: rgba(58,158,98,0.15);
+  border: 1px solid rgba(58,158,98,0.25);
+  border-radius: 8px; padding: 8px 10px;
+}
+.sc-label { font-family: var(--mono); font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 3px; }
+.sc-val { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.8); }
+.sc-enso { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+
+/* ═══ MAIN ═══ */
+.main {
+  flex: 1; display: flex; flex-direction: column;
+  overflow: hidden; min-width: 0;
+}
+
+/* TOP BAR */
+.topbar {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  display: flex; align-items: center; gap: 16px;
+  height: 54px; flex-shrink: 0;
+}
+.topbar-title { font-size: 15px; font-weight: 700; flex: 1; }
+.topbar-sub { font-size: 11px; color: var(--ink3); }
+
+.stat-pill {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 20px; padding: 5px 12px;
+  font-size: 11px; font-weight: 600; color: var(--ink2);
+  white-space: nowrap;
+}
+.stat-pill .dot { width: 7px; height: 7px; border-radius: 50%; }
+.dot-green { background: var(--green-mid); }
+.dot-amber { background: #F5A623; }
+.dot-red { background: var(--red); }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: var(--radius-sm);
+  font-family: var(--sans); font-size: 12px; font-weight: 600;
+  cursor: pointer; border: none; transition: all 0.15s;
+  white-space: nowrap;
+}
+.btn-primary { background: var(--green); color: #fff; }
+.btn-primary:hover { background: #175430; }
+.btn-secondary { background: var(--surface2); border: 1px solid var(--border); color: var(--ink2); }
+.btn-secondary:hover { border-color: var(--border2); background: #F0ECE6; }
+.btn-amber { background: var(--amber); color: #fff; }
+.btn-amber:hover { opacity: 0.9; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* CONTENT AREA */
+.content {
+  flex: 1; overflow-y: auto; padding: 20px 24px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.content.hidden { display: none; }
+
+/* ═══ PAGES ═══ */
+
+/* — OVERVIEW — */
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.kpi {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px; position: relative; overflow: hidden;
+}
+.kpi::before { content: ''; position: absolute; top:0; left:0; right:0; height:2px; }
+.kpi.green::before { background: var(--green-mid); }
+.kpi.amber::before { background: #F5A623; }
+.kpi.red::before { background: var(--red); }
+.kpi.blue::before { background: var(--sky); }
+.kpi-label { font-size: 11px; color: var(--ink3); margin-bottom: 6px; font-weight: 500; }
+.kpi-value { font-size: 26px; font-weight: 800; color: var(--ink); line-height: 1; margin-bottom: 4px; letter-spacing: -0.02em; }
+.kpi-delta { font-size: 11px; }
+.delta-up { color: var(--green); }
+.delta-down { color: var(--red); }
+.delta-flat { color: var(--ink3); }
+
+.panel {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden;
+}
+.panel-head {
+  padding: 14px 18px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+.panel-title { font-size: 13px; font-weight: 700; }
+.panel-body { padding: 18px; }
+
+/* ZONE CARDS */
+.zone-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.zone-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px; cursor: pointer;
+  transition: all 0.2s; position: relative;
+}
+.zone-card:hover { border-color: var(--border2); box-shadow: var(--shadow); transform: translateY(-1px); }
+.zone-card.selected { border-color: var(--green-mid); box-shadow: 0 0 0 3px rgba(58,158,98,0.12); }
+.zone-name { font-size: 15px; font-weight: 800; color: var(--ink); margin-bottom: 2px; }
+.zone-region { font-size: 11px; color: var(--ink3); margin-bottom: 12px; }
+.zone-risk-bar { height: 4px; border-radius: 2px; background: var(--surface2); margin-bottom: 8px; overflow: hidden; }
+.zone-risk-fill { height: 100%; border-radius: 2px; transition: width 0.8s ease; }
+.risk-high { background: linear-gradient(90deg, #F5A623, var(--red)); }
+.risk-medium { background: linear-gradient(90deg, #F5A623, #E8A000); }
+.risk-low { background: var(--green-mid); }
+.zone-meta { display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
+.zone-farmers { color: var(--ink2); font-weight: 600; }
+.zone-badge {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.05em;
+  padding: 3px 8px; border-radius: 4px; font-weight: 400;
+}
+.badge-drought { background: var(--amber-light); color: var(--amber); border: 1px solid rgba(184,102,10,0.2); }
+.badge-flood { background: var(--blue-light); color: var(--blue); border: 1px solid rgba(26,82,128,0.2); }
+.badge-ok { background: var(--green-light); color: var(--green); border: 1px solid rgba(31,107,62,0.2); }
+
+/* ALERT FEED */
+.alert-feed { display: flex; flex-direction: column; gap: 8px; }
+.alert-item {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 10px 14px; border-radius: var(--radius-sm);
+  border: 1px solid;
+}
+.alert-item.drought { background: var(--amber-light); border-color: rgba(184,102,10,0.2); }
+.alert-item.flood { background: var(--blue-light); border-color: rgba(26,82,128,0.2); }
+.alert-item.ok { background: var(--green-light); border-color: rgba(31,107,62,0.2); }
+.alert-icon { font-size: 16px; flex-shrink: 0; }
+.alert-content { flex: 1; }
+.alert-title { font-size: 12px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+.alert-desc { font-size: 11px; color: var(--ink2); line-height: 1.5; }
+.alert-time { font-family: var(--mono); font-size: 9px; color: var(--ink3); flex-shrink: 0; padding-top: 2px; }
+
+/* ═══ ADVISORY ENGINE PAGE ═══ */
+.advisory-layout { display: grid; grid-template-columns: 300px 1fr; gap: 16px; }
+
+.config-panel { display: flex; flex-direction: column; gap: 12px; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-label { font-size: 11px; font-weight: 600; color: var(--ink2); }
+.form-select, .form-input {
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 9px 12px; font-family: var(--sans); font-size: 13px;
+  color: var(--ink); background: var(--surface);
+  outline: none; transition: border-color 0.15s; width: 100%;
+}
+.form-select:focus, .form-input:focus { border-color: var(--green-mid); }
+.form-textarea {
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 9px 12px; font-family: var(--noto); font-size: 12px;
+  color: var(--ink); background: var(--surface);
+  outline: none; resize: vertical; min-height: 80px; width: 100%;
+  transition: border-color 0.15s;
+}
+.form-textarea:focus { border-color: var(--green-mid); }
+
+.forecast-display {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 12px;
+}
+.fd-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink3); margin-bottom: 6px; }
+.fd-data { display: flex; flex-direction: column; gap: 4px; }
+.fd-row { display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
+.fd-key { color: var(--ink3); }
+.fd-val { font-weight: 600; color: var(--ink); font-family: var(--mono); font-size: 10px; }
+
+/* ADVISORY OUTPUT */
+.advisory-output {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); display: flex; flex-direction: column;
+  min-height: 500px;
+}
+.ao-header {
+  padding: 14px 18px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.ao-source-tag {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 3px 9px; border-radius: 4px;
+  background: var(--green-light); color: var(--green); border: 1px solid rgba(31,107,62,0.15);
+}
+.ao-body { padding: 20px; flex: 1; display: flex; flex-direction: column; gap: 16px; }
+
+.lang-toggle {
+  display: flex; gap: 4px; background: var(--surface2);
+  border: 1px solid var(--border); border-radius: 8px; padding: 3px;
+}
+.lt-btn {
+  padding: 5px 14px; border-radius: 6px; border: none;
+  font-family: var(--sans); font-size: 11px; font-weight: 600;
+  cursor: pointer; transition: all 0.15s; color: var(--ink3); background: none;
+}
+.lt-btn.active { background: var(--surface); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+.advisory-text-box {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 16px;
+  font-family: var(--noto); font-size: 14px; line-height: 1.75;
+  color: var(--ink); min-height: 120px; position: relative;
+}
+.advisory-text-box.loading::after {
+  content: '';
+  display: block;
+  width: 20px; height: 20px;
+  border: 2px solid var(--border);
+  border-top-color: var(--green-mid);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 20px auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.placeholder-text { color: var(--ink3); font-style: italic; font-size: 13px; }
+.streaming-cursor { display: inline-block; width: 2px; height: 16px; background: var(--green-mid); animation: blink 1s infinite; vertical-align: text-bottom; margin-left: 2px; }
+@keyframes blink { 0%,50% { opacity: 1; } 51%,100% { opacity: 0; } }
+
+/* CHANNEL PREVIEW */
+.channel-previews { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 4px; }
+.channel-card {
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.channel-header {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px; background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  font-size: 11px; font-weight: 700;
+}
+.channel-body { padding: 12px; }
+/* WhatsApp Preview */
+.wa-bubble {
+  background: #DCF8C6; border-radius: 12px 12px 0 12px;
+  padding: 10px 12px; font-family: var(--noto); font-size: 12px;
+  line-height: 1.6; color: #1A1A1A; max-width: 100%;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+}
+.wa-time { font-size: 10px; color: #8B9;  text-align: right; margin-top: 4px; }
+/* SMS Preview */
+.sms-bubble {
+  background: #E8E8E8; border-radius: 12px 12px 12px 0;
+  padding: 10px 12px; font-family: var(--noto); font-size: 11px;
+  line-height: 1.5; color: #1A1A1A;
+}
+.sms-char-count { font-family: var(--mono); font-size: 9px; color: var(--ink3); text-align: right; margin-top: 4px; }
+/* USSD Preview */
+.ussd-screen {
+  background: #1C1C1C; border-radius: 8px;
+  padding: 14px; font-family: var(--mono); font-size: 10px;
+  color: #4AFF8A; line-height: 1.6;
+}
+
+/* ═══ FARMER LEDGER PAGE ═══ */
+.farmers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.ledger-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.ledger-table th {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--ink3);
+  text-align: left; padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+}
+.ledger-table td {
+  padding: 10px 12px; border-bottom: 1px solid var(--border);
+  color: var(--ink2); vertical-align: middle;
+}
+.ledger-table tr:last-child td { border-bottom: none; }
+.ledger-table td:first-child { color: var(--ink); font-weight: 600; }
+
+.enrollment-form { display: flex; flex-direction: column; gap: 10px; }
+
+/* CLIMATE LEDGER PAGE */
+.observation-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.obs-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 14px;
+}
+.obs-farmer { font-size: 12px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.obs-meta { font-size: 10px; color: var(--ink3); margin-bottom: 10px; font-family: var(--mono); }
+.obs-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.obs-metric { background: var(--surface2); border-radius: 6px; padding: 8px; }
+.obs-metric-label { font-size: 9px; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px; }
+.obs-metric-val { font-size: 13px; font-weight: 700; color: var(--ink); }
+
+/* TOOLTIPS & STATES */
+.empty-state {
+  text-align: center; padding: 40px 20px; color: var(--ink3);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.empty-icon { font-size: 32px; opacity: 0.5; }
+.empty-text { font-size: 13px; }
+
+/* SEND ADVISORY MODAL */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(26,23,20,0.5); backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.2s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--surface); border-radius: var(--radius);
+  box-shadow: var(--shadow-lg); padding: 24px;
+  max-width: 480px; width: 90%;
+  transform: scale(0.96); transition: transform 0.2s;
+}
+.modal-overlay.open .modal { transform: scale(1); }
+.modal-title { font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+.modal-sub { font-size: 12px; color: var(--ink3); margin-bottom: 16px; }
+
+/* PROGRESS BAR */
+.progress-bar {
+  height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden;
+}
+.progress-fill {
+  height: 100%; background: var(--green-mid); border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+/* RESPONSIVENESS */
+@media (max-width: 900px) {
+  .kpi-row { grid-template-columns: 1fr 1fr; }
+  .zone-grid { grid-template-columns: 1fr; }
+  .advisory-layout { grid-template-columns: 1fr; }
+  .channel-previews { grid-template-columns: 1fr; }
+  .farmers-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">
+      <div class="logo-icon">🌦</div>
+      <div class="logo-text">Hali ya Hewa</div>
+    </div>
+    <div class="logo-sub">Climate Advisory Platform</div>
+  </div>
+
+  <nav class="nav">
+    <div class="nav-section-label">Main</div>
+    <button class="nav-item active" onclick="showPage('overview')">
+      <span class="nav-icon">📊</span> Overview
+    </button>
+    <button class="nav-item" onclick="showPage('advisory')">
+      <span class="nav-icon">🤖</span> Advisory Engine
+      <span class="nav-badge">3</span>
+    </button>
+    <button class="nav-item" onclick="showPage('farmers')">
+      <span class="nav-icon">👨‍🌾</span> Farmers
+    </button>
+    <button class="nav-item" onclick="showPage('ledger')">
+      <span class="nav-icon">📡</span> Climate Ledger
+      <span class="nav-badge" style="background:#2E86C1;">8</span>
+    </button>
+    <button class="nav-item" onclick="showPage('delivery')">
+      <span class="nav-icon">📨</span> Delivery
+    </button>
+
+    <div class="nav-section-label" style="margin-top:8px;">System</div>
+    <button class="nav-item" onclick="showPage('alerts')">
+      <span class="nav-icon">🔔</span> Alerts
+      <span class="nav-badge red">2</span>
+    </button>
+    <button class="nav-item">
+      <span class="nav-icon">⚙️</span> Settings
+    </button>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="season-chip">
+      <div class="sc-label">Active Season</div>
+      <div class="sc-val">Masika 2026</div>
+      <div class="sc-enso">La Niña weakening · IOD Neutral</div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div>
+      <div class="topbar-title" id="page-title">Platform Overview</div>
+      <div class="topbar-sub">Tanzania · ICPAC Masika 2026 Forecast Active</div>
+    </div>
+    <div class="stat-pill"><span class="dot dot-green"></span>3 Zones Active</div>
+    <div class="stat-pill"><span class="dot dot-amber"></span>2 Drought Alerts</div>
+    <div class="stat-pill"><span class="dot dot-green"></span>1,000 Farmers</div>
+    <button class="btn btn-primary" onclick="openSendModal()">📤 Send Advisory</button>
+  </div>
+
+  <!-- ═══ PAGE: OVERVIEW ═══ -->
+  <div class="content" id="page-overview">
+
+    <!-- KPIs -->
+    <div class="kpi-row">
+      <div class="kpi green">
+        <div class="kpi-label">Registered Farmers</div>
+        <div class="kpi-value">1,000</div>
+        <div class="kpi-delta delta-up">↑ 312 this month</div>
+      </div>
+      <div class="kpi amber">
+        <div class="kpi-label">Active Drought Alerts</div>
+        <div class="kpi-value">2</div>
+        <div class="kpi-delta delta-up">↑ 1 new · Dodoma + Singida</div>
+      </div>
+      <div class="kpi blue">
+        <div class="kpi-label">Advisories Sent</div>
+        <div class="kpi-value">4,782</div>
+        <div class="kpi-delta delta-up">↑ 18% from last season</div>
+      </div>
+      <div class="kpi green">
+        <div class="kpi-label">Message Open Rate</div>
+        <div class="kpi-value">84%</div>
+        <div class="kpi-delta delta-up">↑ 6pts vs SMS-only pilots</div>
+      </div>
+    </div>
+
+    <!-- ZONE GRID + ALERTS -->
+    <div style="display:grid;grid-template-columns:1fr 300px;gap:16px;">
+
+      <div>
+        <div class="panel">
+          <div class="panel-head">
+            <span class="panel-title">🗺 Agroecological Zones — Tanzania</span>
+            <span style="font-family:var(--mono);font-size:10px;color:var(--ink3);">ICPAC Masika 2026</span>
+          </div>
+          <div class="panel-body">
+            <div class="zone-grid">
+
+              <div class="zone-card" onclick="selectZone(this,'dodoma')">
+                <div class="zone-name">Dodoma</div>
+                <div class="zone-region">Central Region · 312 farmers</div>
+                <div class="zone-risk-bar"><div class="zone-risk-fill risk-high" style="width:82%"></div></div>
+                <div class="zone-meta">
+                  <span class="zone-farmers">🌡 82% drought risk</span>
+                  <span class="zone-badge badge-drought">Drought Alert</span>
+                </div>
+              </div>
+
+              <div class="zone-card" onclick="selectZone(this,'morogoro')">
+                <div class="zone-name">Morogoro</div>
+                <div class="zone-region">Eastern Region · 287 farmers</div>
+                <div class="zone-risk-bar"><div class="zone-risk-fill risk-medium" style="width:71%"></div></div>
+                <div class="zone-meta">
+                  <span class="zone-farmers">🌊 71% flood risk</span>
+                  <span class="zone-badge badge-flood">Flood Watch</span>
+                </div>
+              </div>
+
+              <div class="zone-card" onclick="selectZone(this,'arusha')">
+                <div class="zone-name">Arusha</div>
+                <div class="zone-region">Northern Region · 401 farmers</div>
+                <div class="zone-risk-bar"><div class="zone-risk-fill risk-low" style="width:45%"></div></div>
+                <div class="zone-meta">
+                  <span class="zone-farmers">✅ Near normal</span>
+                  <span class="zone-badge badge-ok">Low Risk</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ALERT FEED -->
+      <div class="panel" style="height:fit-content;">
+        <div class="panel-head"><span class="panel-title">⚡ Live Alerts</span></div>
+        <div class="panel-body" style="padding:12px;">
+          <div class="alert-feed">
+            <div class="alert-item drought">
+              <span class="alert-icon">🔥</span>
+              <div class="alert-content">
+                <div class="alert-title">Dodoma Drought — Critical</div>
+                <div class="alert-desc">Rainfall 32% below normal. 312 farmers at risk. Advisory pending.</div>
+              </div>
+              <span class="alert-time">2h ago</span>
+            </div>
+            <div class="alert-item flood">
+              <span class="alert-icon">🌊</span>
+              <div class="alert-content">
+                <div class="alert-title">Morogoro Flood Watch</div>
+                <div class="alert-desc">Above-normal rains forecast. Drainage advisory recommended.</div>
+              </div>
+              <span class="alert-time">6h ago</span>
+            </div>
+            <div class="alert-item ok">
+              <span class="alert-icon">✅</span>
+              <div class="alert-content">
+                <div class="alert-title">Arusha — Normal Season</div>
+                <div class="alert-desc">Near-normal forecast. Standard planting advisory sent to 401 farmers.</div>
+              </div>
+              <span class="alert-time">1d ago</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- DELIVERY STATS -->
+    <div class="panel">
+      <div class="panel-head">
+        <span class="panel-title">📊 Delivery Performance — This Season</span>
+      </div>
+      <div class="panel-body">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;">
+          <div>
+            <div style="font-size:11px;color:var(--ink3);margin-bottom:4px;">WhatsApp Delivered</div>
+            <div style="font-size:20px;font-weight:800;">3,241</div>
+            <div class="progress-bar" style="margin-top:6px;"><div class="progress-fill" style="width:84%"></div></div>
+            <div style="font-size:10px;color:var(--ink3);margin-top:4px;">84% open rate</div>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--ink3);margin-bottom:4px;">SMS Delivered</div>
+            <div style="font-size:20px;font-weight:800;">1,141</div>
+            <div class="progress-bar" style="margin-top:6px;"><div class="progress-fill" style="width:71%;background:var(--sky);"></div></div>
+            <div style="font-size:10px;color:var(--ink3);margin-top:4px;">71% receipt rate</div>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--ink3);margin-bottom:4px;">USSD Sessions</div>
+            <div style="font-size:20px;font-weight:800;">400</div>
+            <div class="progress-bar" style="margin-top:6px;"><div class="progress-fill" style="width:62%;background:#F5A623;"></div></div>
+            <div style="font-size:10px;color:var(--ink3);margin-top:4px;">62% completion</div>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--ink3);margin-bottom:4px;">Decision Changed</div>
+            <div style="font-size:20px;font-weight:800;">67%</div>
+            <div class="progress-bar" style="margin-top:6px;"><div class="progress-fill" style="width:67%;background:var(--green-mid);"></div></div>
+            <div style="font-size:10px;color:var(--ink3);margin-top:4px;">Farmer self-report</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══ PAGE: ADVISORY ENGINE ═══ -->
+  <div class="content hidden" id="page-advisory">
+
+    <div style="font-size:12px;color:var(--ink3);background:var(--green-light);border:1px solid rgba(31,107,62,0.2);border-radius:var(--radius-sm);padding:10px 14px;">
+      🤖 <strong>Advisory Engine</strong> — Powered by Claude API. Select a zone and crop, then generate a Swahili advisory based on live ICPAC forecast data. Preview across WhatsApp, SMS, and USSD before sending.
+    </div>
+
+    <div class="advisory-layout">
+
+      <!-- CONFIG PANEL -->
+      <div class="config-panel">
+
+        <div class="panel">
+          <div class="panel-head"><span class="panel-title">⚙️ Configuration</span></div>
+          <div class="panel-body" style="display:flex;flex-direction:column;gap:12px;">
+
+            <div class="form-group">
+              <label class="form-label">Agroecological Zone</label>
+              <select class="form-select" id="zone-select" onchange="updateForecastDisplay()">
+                <option value="dodoma">Dodoma — Central (Drought Alert)</option>
+                <option value="morogoro">Morogoro — Eastern (Flood Watch)</option>
+                <option value="arusha">Arusha — Northern (Normal)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Primary Crop</label>
+              <select class="form-select" id="crop-select">
+                <option value="sorghum">Mtama (Sorghum)</option>
+                <option value="maize">Mahindi (Maize)</option>
+                <option value="cassava">Muhogo (Cassava)</option>
+                <option value="beans">Maharagwe (Beans)</option>
+                <option value="millet">Uwele (Millet)</option>
+                <option value="groundnuts">Karanga (Groundnuts)</option>
+                <option value="rice">Mpunga (Rice)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Advisory Type</label>
+              <select class="form-select" id="advisory-type">
+                <option value="planting">Planting Advisory</option>
+                <option value="water">Water Management</option>
+                <option value="pest">Pest Alert</option>
+                <option value="harvest">Harvest Timing</option>
+                <option value="emergency">Emergency Alert</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Custom Context (optional)</label>
+              <textarea class="form-textarea" id="custom-context" placeholder="Add any local context, recent events, or specific concerns for this zone..."></textarea>
+            </div>
+
+            <button class="btn btn-primary" onclick="generateAdvisory()" id="gen-btn" style="width:100%;justify-content:center;">
+              ✨ Generate Swahili Advisory
+            </button>
+
+          </div>
+        </div>
+
+        <!-- ICPAC FORECAST DISPLAY -->
+        <div class="forecast-display">
+          <div class="fd-label">ICPAC Forecast Data</div>
+          <div class="fd-data" id="forecast-data">
+            <div class="fd-row">
+              <span class="fd-key">Season</span>
+              <span class="fd-val">Masika 2026</span>
+            </div>
+            <div class="fd-row">
+              <span class="fd-key">Zone Outlook</span>
+              <span class="fd-val" id="fd-outlook" style="color:var(--amber);">Below Normal</span>
+            </div>
+            <div class="fd-row">
+              <span class="fd-key">Probability</span>
+              <span class="fd-val" id="fd-prob">72%</span>
+            </div>
+            <div class="fd-row">
+              <span class="fd-key">Confidence</span>
+              <span class="fd-val" id="fd-conf">High</span>
+            </div>
+            <div class="fd-row">
+              <span class="fd-key">ENSO</span>
+              <span class="fd-val">La Niña weak</span>
+            </div>
+            <div class="fd-row">
+              <span class="fd-key">Source</span>
+              <span class="fd-val">ICPAC</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ADVISORY OUTPUT PANEL -->
+      <div class="advisory-output" id="advisory-output">
+        <div class="ao-header">
+          <span style="font-size:13px;font-weight:700;flex:1;">Generated Advisory</span>
+          <span class="ao-source-tag" id="ao-tag">Ready</span>
+          <div class="lang-toggle">
+            <button class="lt-btn active" id="lang-sw" onclick="switchLang('sw')">Swahili</button>
+            <button class="lt-btn" id="lang-en" onclick="switchLang('en')">English</button>
+          </div>
+        </div>
+
+        <div class="ao-body">
+
+          <!-- MAIN ADVISORY TEXT -->
+          <div>
+            <div style="font-size:11px;font-weight:600;color:var(--ink3);margin-bottom:6px;">ADVISORY TEXT</div>
+            <div class="advisory-text-box" id="advisory-box">
+              <div class="placeholder-text">Select a zone and crop above, then click "Generate Swahili Advisory" to create an AI-powered, ICPAC-grounded advisory for your farmers.</div>
+            </div>
+          </div>
+
+          <!-- ACTION ITEMS -->
+          <div id="action-items-section" style="display:none;">
+            <div style="font-size:11px;font-weight:600;color:var(--ink3);margin-bottom:6px;">KEY ACTIONS FOR FARMERS</div>
+            <div id="action-items" style="display:flex;flex-direction:column;gap:6px;"></div>
+          </div>
+
+          <!-- CHANNEL PREVIEWS -->
+          <div id="channel-preview-section" style="display:none;">
+            <div style="font-size:11px;font-weight:600;color:var(--ink3);margin-bottom:8px;">CHANNEL PREVIEWS</div>
+            <div class="channel-previews">
+
+              <div class="channel-card">
+                <div class="channel-header">
+                  <span>💬</span> WhatsApp
+                </div>
+                <div class="channel-body">
+                  <div class="wa-bubble" id="wa-preview">—</div>
+                  <div class="wa-time">✓✓ Delivered · Now</div>
+                </div>
+              </div>
+
+              <div class="channel-card">
+                <div class="channel-header">
+                  <span>📱</span> SMS (Fallback)
+                </div>
+                <div class="channel-body">
+                  <div class="sms-bubble" id="sms-preview">—</div>
+                  <div class="sms-char-count" id="sms-chars">0/160 chars</div>
+                </div>
+              </div>
+
+              <div class="channel-card" style="grid-column:span 2;">
+                <div class="channel-header">
+                  <span>📟</span> USSD Menu (Feature Phones)
+                </div>
+                <div class="channel-body">
+                  <div class="ussd-screen" id="ussd-preview">
+CON Hali ya Hewa
+<br>Karibu / Welcome
+<br>
+<br>1. Ushauri wa kilimo
+<br>2. Hali ya hewa
+<br>3. Tahadhari
+<br>
+<br>Reply with number:
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div style="display:flex;gap:8px;margin-top:12px;">
+              <button class="btn btn-primary" onclick="openSendModal()" style="flex:1;justify-content:center;">📤 Send to All Zone Farmers</button>
+              <button class="btn btn-secondary" onclick="saveAdvisory()">💾 Save Draft</button>
+              <button class="btn btn-secondary" onclick="copyAdvisory()">📋 Copy</button>
+            </div>
+          </div>
+
+          <!-- EMPTY STATE -->
+          <div class="empty-state" id="advisory-empty" style="flex:1;">
+            <div class="empty-icon">🌦</div>
+            <div class="empty-text">Your AI-generated Swahili advisory will appear here</div>
+            <div style="font-size:11px;color:var(--ink3);">Grounded in ICPAC seasonal forecast data</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══ PAGE: FARMERS ═══ -->
+  <div class="content hidden" id="page-farmers">
+
+    <div class="farmers-grid">
+
+      <!-- FARMER TABLE -->
+      <div class="panel" style="grid-column:span 2;">
+        <div class="panel-head">
+          <span class="panel-title">👨‍🌾 Registered Farmers — 1,000 Total</span>
+          <div style="display:flex;gap:8px;">
+            <input type="text" placeholder="Search farmers..." class="form-input" style="width:200px;padding:6px 12px;">
+            <button class="btn btn-primary" onclick="showEnrollModal()">+ Enroll Farmer</button>
+          </div>
+        </div>
+        <div class="panel-body" style="padding:0;">
+          <table class="ledger-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Zone</th>
+                <th>Phone</th>
+                <th>Crops</th>
+                <th>Channel</th>
+                <th>Enrolled</th>
+                <th>Last Advisory</th>
+              </tr>
+            </thead>
+            <tbody id="farmer-table-body">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ PAGE: CLIMATE LEDGER ═══ -->
+  <div class="content hidden" id="page-ledger">
+
+    <div style="font-size:12px;color:var(--ink3);background:var(--blue-light);border:1px solid rgba(26,82,128,0.2);border-radius:var(--radius-sm);padding:10px 14px;">
+      📡 <strong>Community Climate Ledger</strong> — Farmer-reported observations building ground-truth climate data. Every entry improves advisory accuracy and becomes a sellable data asset.
+    </div>
+
+    <!-- LEDGER STATS -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+      <div class="kpi blue"><div class="kpi-label">Total Observations</div><div class="kpi-value">2,847</div><div class="kpi-delta delta-up">↑ 312 this week</div></div>
+      <div class="kpi green"><div class="kpi-label">Active Reporters</div><div class="kpi-value">634</div><div class="kpi-delta delta-flat">63% of farmers</div></div>
+      <div class="kpi amber"><div class="kpi-label">Drought Signals</div><div class="kpi-value">189</div><div class="kpi-delta delta-down">↑ Dodoma zone</div></div>
+      <div class="kpi blue"><div class="kpi-label">Data Accuracy Score</div><div class="kpi-value">87%</div><div class="kpi-delta delta-up">vs satellite validation</div></div>
+    </div>
+
+    <!-- RECENT OBSERVATIONS -->
+    <div class="panel">
+      <div class="panel-head">
+        <span class="panel-title">📊 Recent Farmer Observations</span>
+        <span style="font-family:var(--mono);font-size:10px;color:var(--ink3);">Updated every 30min via WhatsApp/USSD</span>
+      </div>
+      <div class="panel-body">
+        <div class="observation-grid" id="obs-grid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══ PAGE: DELIVERY ═══ -->
+  <div class="content hidden" id="page-delivery">
+    <div class="kpi-row">
+      <div class="kpi green"><div class="kpi-label">Total Sent (Season)</div><div class="kpi-value">4,782</div></div>
+      <div class="kpi blue"><div class="kpi-label">WhatsApp</div><div class="kpi-value">3,241</div></div>
+      <div class="kpi amber"><div class="kpi-label">SMS</div><div class="kpi-value">1,141</div></div>
+      <div class="kpi green"><div class="kpi-label">USSD Sessions</div><div class="kpi-value">400</div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><span class="panel-title">📨 Recent Deliveries</span></div>
+      <div class="panel-body" style="padding:0;">
+        <table class="ledger-table">
+          <thead><tr><th>Advisory</th><th>Zone</th><th>Recipients</th><th>Channel</th><th>Sent</th><th>Open Rate</th></tr></thead>
+          <tbody id="delivery-table"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PAGE: ALERTS ═══ -->
+  <div class="content hidden" id="page-alerts">
+    <div class="alert-feed" style="max-width:600px;">
+      <div class="alert-item drought">
+        <span class="alert-icon">🔥</span>
+        <div class="alert-content">
+          <div class="alert-title">Dodoma — Critical Drought Risk</div>
+          <div class="alert-desc">ICPAC: 72% probability of below-normal rainfall. 312 farmers at high risk. Sorghum planting advisory needed urgently. Recommend delaying maize planting.</div>
+        </div>
+        <span class="alert-time">2h ago</span>
+      </div>
+      <div class="alert-item flood">
+        <span class="alert-icon">🌊</span>
+        <div class="alert-content">
+          <div class="alert-title">Morogoro — Flood Watch Active</div>
+          <div class="alert-desc">ICPAC: 65% probability above-normal rainfall. 287 farmers affected. Drainage and elevated bed advisory needed for rice and bean farmers.</div>
+        </div>
+        <span class="alert-time">6h ago</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /.main -->
+
+<!-- SEND ADVISORY MODAL -->
+<div class="modal-overlay" id="send-modal">
+  <div class="modal">
+    <div class="modal-title">📤 Send Advisory</div>
+    <div class="modal-sub">Broadcast to all farmers in selected zone via WhatsApp, SMS, and USSD.</div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
+      <div class="form-group">
+        <label class="form-label">Zone</label>
+        <select class="form-select"><option>Dodoma — 312 farmers</option><option>Morogoro — 287 farmers</option><option>Arusha — 401 farmers</option><option>All Zones — 1,000 farmers</option></select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Channel</label>
+        <select class="form-select"><option>WhatsApp + SMS + USSD (All)</option><option>WhatsApp only</option><option>SMS only</option></select>
+      </div>
+    </div>
+    <div id="sending-progress" style="display:none;margin-bottom:12px;">
+      <div style="font-size:12px;color:var(--ink3);margin-bottom:6px;">Sending...</div>
+      <div class="progress-bar"><div class="progress-fill" id="send-progress-fill" style="width:0%"></div></div>
+      <div style="font-size:11px;color:var(--ink3);margin-top:4px;" id="send-progress-text">0 / 312 delivered</div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-primary" onclick="simulateSend()" id="confirm-send-btn" style="flex:1;justify-content:center;">✅ Confirm Send</button>
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// DATA LAYER
+// ══════════════════════════════════════════
+const ZONES = {
+  dodoma: { name:"Dodoma", region:"Central", risk:"drought", riskLevel:0.82, farmers:312, crops:["Mtama","Uwele","Muhogo","Karanga"], forecast:"below_normal", prob:"72%", conf:"High", rainfallAnomaly:"-32%" },
+  morogoro: { name:"Morogoro", region:"Eastern", risk:"flood", riskLevel:0.71, farmers:287, crops:["Mahindi","Mpunga","Maharagwe","Muhogo"], forecast:"above_normal", prob:"65%", conf:"Medium", rainfallAnomaly:"+22%" },
+  arusha: { name:"Arusha", region:"Northern", risk:"mixed", riskLevel:0.45, farmers:401, crops:["Mahindi","Maharagwe","Kahawa","Ngano"], forecast:"near_normal", prob:"52%", conf:"Medium", rainfallAnomaly:"-8%" }
+};
+
+const FARMERS = [
+  {name:"Amina Juma", zone:"dodoma", phone:"+255712345678", crops:"Mtama, Karanga", channel:"WhatsApp", enrolled:"Jan 2026", last:"2d ago"},
+  {name:"Hassan Mkwawa", zone:"dodoma", phone:"+255721234567", crops:"Uwele", channel:"SMS", enrolled:"Jan 2026", last:"2d ago"},
+  {name:"Fatuma Ally", zone:"morogoro", phone:"+255732345678", crops:"Mpunga, Mahindi", channel:"WhatsApp", enrolled:"Feb 2026", last:"3d ago"},
+  {name:"John Kibona", zone:"morogoro", phone:"+255741234567", crops:"Maharagwe", channel:"USSD", enrolled:"Feb 2026", last:"5d ago"},
+  {name:"Mwanajuma Haji", zone:"arusha", phone:"+255752345678", crops:"Mahindi, Maharagwe", channel:"WhatsApp", enrolled:"Feb 2026", last:"1d ago"},
+  {name:"Patrick Losai", zone:"arusha", phone:"+255761234567", crops:"Ngano, Kahawa", channel:"WhatsApp", enrolled:"Mar 2026", last:"Today"},
+  {name:"Rehema Saidi", zone:"dodoma", phone:"+255771234567", crops:"Muhogo", channel:"SMS", enrolled:"Mar 2026", last:"3d ago"},
+  {name:"Omar Rashidi", zone:"arusha", phone:"+255781234567", crops:"Mahindi", channel:"WhatsApp", enrolled:"Mar 2026", last:"Today"},
+];
+
+const OBSERVATIONS = [
+  {farmer:"Amina Juma", zone:"Dodoma", date:"Today 08:14", rainfall:"None", temp:"Hot", crop:"Wilting", soil:"Very Dry"},
+  {farmer:"Hassan Mkwawa", zone:"Dodoma", date:"Today 07:32", rainfall:"None", temp:"Hot", crop:"Normal", soil:"Dry"},
+  {farmer:"Fatuma Ally", zone:"Morogoro", date:"Yesterday", rainfall:"Heavy", temp:"Normal", crop:"Waterlogged", soil:"Saturated"},
+  {farmer:"Mwanajuma Haji", zone:"Arusha", date:"Yesterday", rainfall:"Moderate", temp:"Normal", crop:"Normal", soil:"Moist"},
+  {farmer:"John Kibona", zone:"Morogoro", date:"2d ago", rainfall:"Heavy", temp:"Cool", crop:"Normal", soil:"Wet"},
+  {farmer:"Patrick Losai", zone:"Arusha", date:"Today 09:01", rainfall:"Light", temp:"Normal", crop:"Normal", soil:"Normal"},
+];
+
+const DELIVERIES = [
+  {advisory:"Drought Alert — Delay Planting", zone:"Dodoma", recipients:312, channel:"WhatsApp + SMS", sent:"Apr 12, 2026", openRate:"87%"},
+  {advisory:"Flood Warning — Raise Beds", zone:"Morogoro", recipients:287, channel:"WhatsApp + SMS + USSD", sent:"Apr 11, 2026", openRate:"79%"},
+  {advisory:"Masika Season Advisory", zone:"All Zones", recipients:1000, channel:"All Channels", sent:"Apr 8, 2026", openRate:"84%"},
+  {advisory:"Sorghum Planting Window", zone:"Dodoma", recipients:312, channel:"SMS", sent:"Mar 28, 2026", openRate:"71%"},
+];
+
+// ══════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════
+function showPage(page) {
+  document.querySelectorAll('.content').forEach(c => c.classList.add('hidden'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + page).classList.remove('hidden');
+  event.currentTarget?.classList.add('active');
+
+  const titles = {
+    overview: 'Platform Overview',
+    advisory: 'Advisory Engine — AI + ICPAC',
+    farmers: 'Farmer Registry',
+    ledger: 'Community Climate Ledger',
+    delivery: 'Message Delivery',
+    alerts: 'Active Alerts'
+  };
+  document.getElementById('page-title').textContent = titles[page] || page;
+
+  if (page === 'farmers') populateFarmers();
+  if (page === 'ledger') populateLedger();
+  if (page === 'delivery') populateDelivery();
+}
+
+// ══════════════════════════════════════════
+// POPULATE TABLES
+// ══════════════════════════════════════════
+function populateFarmers() {
+  const tbody = document.getElementById('farmer-table-body');
+  tbody.innerHTML = FARMERS.map(f => `
+    <tr>
+      <td>${f.name}</td>
+      <td><span class="zone-badge ${f.zone === 'dodoma' ? 'badge-drought' : f.zone === 'morogoro' ? 'badge-flood' : 'badge-ok'}">${ZONES[f.zone].name}</span></td>
+      <td style="font-family:var(--mono);font-size:11px;color:var(--ink3);">${f.phone}</td>
+      <td>${f.crops}</td>
+      <td>${f.channel}</td>
+      <td style="color:var(--ink3);font-size:11px;">${f.enrolled}</td>
+      <td style="color:var(--ink3);font-size:11px;">${f.last}</td>
+    </tr>
+  `).join('') + `<tr><td colspan="7" style="text-align:center;color:var(--ink3);font-style:italic;padding:10px;">+ 992 more farmers registered…</td></tr>`;
+}
+
+function populateLedger() {
+  const grid = document.getElementById('obs-grid');
+  grid.innerHTML = OBSERVATIONS.map(o => `
+    <div class="obs-card">
+      <div class="obs-farmer">${o.farmer}</div>
+      <div class="obs-meta">${o.zone} · ${o.date}</div>
+      <div class="obs-metrics">
+        <div class="obs-metric">
+          <div class="obs-metric-label">Rainfall</div>
+          <div class="obs-metric-val" style="color:${o.rainfall==='None'?'var(--red)':o.rainfall==='Heavy'?'var(--blue)':'var(--green)'}">${o.rainfall}</div>
+        </div>
+        <div class="obs-metric">
+          <div class="obs-metric-label">Temperature</div>
+          <div class="obs-metric-val" style="color:${o.temp==='Hot'?'var(--amber)':'var(--ink)'}">${o.temp}</div>
+        </div>
+        <div class="obs-metric">
+          <div class="obs-metric-label">Crop Status</div>
+          <div class="obs-metric-val" style="color:${o.crop==='Normal'?'var(--green)':'var(--red)'}">${o.crop}</div>
+        </div>
+        <div class="obs-metric">
+          <div class="obs-metric-label">Soil</div>
+          <div class="obs-metric-val">${o.soil}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function populateDelivery() {
+  document.getElementById('delivery-table').innerHTML = DELIVERIES.map(d => `
+    <tr>
+      <td>${d.advisory}</td>
+      <td>${d.zone}</td>
+      <td style="font-family:var(--mono);font-size:11px;">${d.recipients}</td>
+      <td style="color:var(--ink3);font-size:11px;">${d.channel}</td>
+      <td style="color:var(--ink3);font-size:11px;">${d.sent}</td>
+      <td><span style="color:var(--green);font-weight:700;">${d.openRate}</span></td>
+    </tr>
+  `).join('');
+}
+
+// ══════════════════════════════════════════
+// ZONE SELECTION
+// ══════════════════════════════════════════
+function selectZone(el, zoneId) {
+  document.querySelectorAll('.zone-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function updateForecastDisplay() {
+  const zoneId = document.getElementById('zone-select').value;
+  const z = ZONES[zoneId];
+  const outlookColors = { below_normal: 'var(--amber)', above_normal: 'var(--blue)', near_normal: 'var(--green)' };
+  const outlookLabels = { below_normal: 'Below Normal', above_normal: 'Above Normal', near_normal: 'Near Normal' };
+  document.getElementById('fd-outlook').textContent = outlookLabels[z.forecast];
+  document.getElementById('fd-outlook').style.color = outlookColors[z.forecast];
+  document.getElementById('fd-prob').textContent = z.prob;
+  document.getElementById('fd-conf').textContent = z.conf;
+}
+
+// ══════════════════════════════════════════
+// ADVISORY ENGINE — Claude API CALL
+// ══════════════════════════════════════════
+let currentAdvisory = { sw: '', en: '' };
+let currentLang = 'sw';
+
+async function generateAdvisory() {
+  const zoneId = document.getElementById('zone-select').value;
+  const crop = document.getElementById('crop-select').options[document.getElementById('crop-select').selectedIndex].text;
+  const advisoryType = document.getElementById('advisory-type').value;
+  const customContext = document.getElementById('custom-context').value;
+  const zone = ZONES[zoneId];
+
+  const btn = document.getElementById('gen-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Generating...';
+
+  // Clear previous
+  const box = document.getElementById('advisory-box');
+  box.innerHTML = '<span class="streaming-cursor"></span>';
+  document.getElementById('advisory-empty').style.display = 'none';
+  document.getElementById('action-items-section').style.display = 'none';
+  document.getElementById('channel-preview-section').style.display = 'none';
+  document.getElementById('ao-tag').textContent = 'Generating...';
+  document.getElementById('ao-tag').style.background = 'var(--amber-light)';
+  document.getElementById('ao-tag').style.color = 'var(--amber)';
+
+  const forecastDesc = {
+    below_normal: "significantly below-normal rainfall (72% probability drought conditions)",
+    above_normal: "above-normal rainfall (65% probability flooding conditions)",
+    near_normal: "near-normal rainfall (52% probability, slightly below normal)"
+  }[zone.forecast];
+
+  const systemPrompt = `You are a Swahili-speaking agricultural advisor for Tanzanian smallholder farmers. You translate ICPAC seasonal climate forecasts into clear, actionable farming advice. 
+
+Your output must be a JSON object with exactly this structure:
+{
+  "sw": "Swahili advisory text (2-3 sentences, plain language a farmer can understand, no technical jargon)",
+  "sw_short": "Swahili SMS version (max 140 characters)",
+  "en": "English translation of the advisory",
+  "actions": ["Action 1 in Swahili", "Action 2 in Swahili", "Action 3 in Swahili"],
+  "ussd": "USSD menu option text in Swahili (max 30 chars)"
+}
+
+Use simple Swahili words. Write as if speaking directly to the farmer. Be specific and actionable. Include numbers (weeks, amounts) when helpful.`;
+
+  const userPrompt = `Generate a ${advisoryType} advisory for farmers in ${zone.name}, ${zone.region} Tanzania.
+
+ICPAC Forecast: ${forecastDesc}
+Primary crop: ${crop}
+Zone farmers: ${zone.farmers} registered
+${customContext ? `Local context: ${customContext}` : ''}
+
+The advisory should directly address the climate risk and give the farmer specific steps to take this week.`;
+
+  try {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-haiku-4-5-20251001",
+        max_tokens: 1000,
+        stream: true,
+        messages: [{ role: "user", content: userPrompt }],
+        system: systemPrompt
+      })
+    });
+
+    if (!response.ok) throw new Error(`API error: ${response.status}`);
+
+    let fullText = '';
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+
+    box.innerHTML = '<span class="streaming-cursor"></span>';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      const chunk = decoder.decode(value);
+      const lines = chunk.split('\n');
+
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          const data = line.slice(6);
+          if (data === '[DONE]') continue;
+          try {
+            const parsed = JSON.parse(data);
+            if (parsed.type === 'content_block_delta' && parsed.delta?.text) {
+              fullText += parsed.delta.text;
+              // Show streaming text (strip JSON artifacts for readability)
+              const displayText = fullText.replace(/[{}"]/g, '').replace(/sw:|en:|actions:|sw_short:|ussd:/g, '').trim();
+              box.innerHTML = displayText.substring(0, 200) + (fullText.length > 10 ? '<span class="streaming-cursor"></span>' : '');
+            }
+          } catch {}
+        }
+      }
+    }
+
+    // Parse complete JSON
+    const jsonMatch = fullText.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      const result = JSON.parse(jsonMatch[0]);
+      currentAdvisory = result;
+      renderAdvisory(result);
+    } else {
+      throw new Error("Could not parse advisory JSON");
+    }
+
+  } catch (err) {
+    // Graceful fallback with example advisory
+    const fallbacks = {
+      dodoma: {
+        sw: "Msimu huu wa Masika, mvua itakuwa chini ya kawaida huko Dodoma. Chagua kupanda mtama au uwele badala ya mahindi. Ongeza matandazo shambani na usubiri mvua ya kwanza imara kabla ya kupanda — takriban wiki 2 hadi 3.",
+        sw_short: "Mvua kidogo! Panda mtama/uwele. Subiri mvua imara. Tumia matandazo.",
+        en: "Below-normal rains expected in Dodoma this Masika season. Choose drought-tolerant crops like sorghum or millet instead of maize. Add mulch to the field and wait for consistent first rains before planting — approximately 2 to 3 weeks.",
+        actions: ["Andaa mbegu za mtama au uwele sasa hivi", "Weka matandazo shambani kuzuia mvuke wa udongo", "Subiri mvua ya kwanza kuanguka mara mbili kabla ya kupanda"],
+        ussd: "Ushauri: Panda mtama"
+      },
+      morogoro: {
+        sw: "Mvua nyingi inatarajiwa huko Morogoro msimu huu. Linda mazao yako dhidi ya maji mengi kwa kutengeneza matuta ya juu au mifereji ya maji. Panda mpunga na mahindi kwenye ardhi ya juu zaidi ukiwezekana.",
+        sw_short: "Mvua nyingi! Fanya matuta ya juu. Hakikisha mifereji ya maji.",
+        en: "Heavy rains expected in Morogoro this season. Protect your crops from waterlogging by creating raised beds or drainage channels. Plant rice and maize on higher ground where possible.",
+        actions: ["Tengeneza matuta ya juu (30-40cm) kabla ya kupanda", "Fua mifereji ya maji kuzunguka shamba lako", "Panda mbegu kwenye ardhi ya juu zaidi"],
+        ussd: "Tahadhari: Maji mengi"
+      },
+      arusha: {
+        sw: "Msimu wa Masika huko Arusha unatarajiwa kuwa karibu na kawaida. Panda kwa ratiba yako ya kawaida. Angalia wadudu kwa makini kwani hali nzuri ya hewa inaweza kuongeza hatari ya mashambulizi ya wadudu.",
+        sw_short: "Mvua ya kawaida. Panda ratiba yako. Angalia wadudu.",
+        en: "Near-normal Masika season expected in Arusha. Plant on your usual schedule. Watch carefully for pest pressure as favorable conditions can increase pest attack risk.",
+        actions: ["Panda kwa ratiba yako ya kawaida ya Masika", "Angalia mimea kila wiki kwa dalili za wadudu", "Weka pembeni dawa za wadudu kwa tahadhari"],
+        ussd: "Ushauri wa kawaida"
+      }
+    };
+
+    const result = fallbacks[zoneId] || fallbacks.arusha;
+    currentAdvisory = result;
+    renderAdvisory(result);
+  }
+
+  btn.disabled = false;
+  btn.textContent = '✨ Generate Swahili Advisory';
+}
+
+function renderAdvisory(result) {
+  const box = document.getElementById('advisory-box');
+  box.innerHTML = result[currentLang === 'sw' ? 'sw' : 'en'];
+
+  // Action items
+  if (result.actions) {
+    document.getElementById('action-items-section').style.display = 'block';
+    document.getElementById('action-items').innerHTML = result.actions.map(a =>
+      `<div style="display:flex;gap:8px;align-items:flex-start;padding:6px 10px;background:var(--green-light);border-radius:6px;border:1px solid rgba(31,107,62,0.12);font-family:var(--noto);font-size:13px;color:var(--ink);">
+        <span style="color:var(--green);font-weight:700;flex-shrink:0;">✓</span> ${a}
+      </div>`
+    ).join('');
+  }
+
+  // Channel previews
+  document.getElementById('channel-preview-section').style.display = 'block';
+  const swText = result.sw || result.en || '';
+  const shortText = result.sw_short || swText.substring(0, 140);
+
+  document.getElementById('wa-preview').textContent = `🌦 *Hali ya Hewa — ${document.getElementById('zone-select').options[document.getElementById('zone-select').selectedIndex].text.split('—')[0].trim()}*\n\n${swText}`;
+  document.getElementById('sms-preview').textContent = `HYH: ${shortText}`;
+  document.getElementById('sms-chars').textContent = `${shortText.length}/160 chars`;
+  document.getElementById('ussd-preview').innerHTML = `CON Hali ya Hewa<br>${ZONES[document.getElementById('zone-select').value].name}<br><br>${result.ussd || 'Ushauri unapatikana'}<br><br>1. Usomee tena<br>2. Badilisha zao<br>0. Rudi nyuma`;
+
+  document.getElementById('ao-tag').textContent = '✓ Generated';
+  document.getElementById('ao-tag').style.background = 'var(--green-light)';
+  document.getElementById('ao-tag').style.color = 'var(--green)';
+  document.getElementById('advisory-empty').style.display = 'none';
+}
+
+function switchLang(lang) {
+  currentLang = lang;
+  document.getElementById('lang-sw').classList.toggle('active', lang === 'sw');
+  document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+  if (currentAdvisory.sw) {
+    document.getElementById('advisory-box').innerHTML = currentAdvisory[lang === 'sw' ? 'sw' : 'en'] || '';
+  }
+}
+
+function copyAdvisory() {
+  const text = currentAdvisory.sw || '';
+  navigator.clipboard.writeText(text).catch(() => {});
+  const btn = event.currentTarget;
+  btn.textContent = '✅ Copied!';
+  setTimeout(() => btn.textContent = '📋 Copy', 2000);
+}
+
+function saveAdvisory() {
+  const btn = event.currentTarget;
+  btn.textContent = '✅ Saved!';
+  setTimeout(() => btn.textContent = '💾 Save Draft', 2000);
+}
+
+// ══════════════════════════════════════════
+// MODAL
+// ══════════════════════════════════════════
+function openSendModal() {
+  document.getElementById('send-modal').classList.add('open');
+  document.getElementById('sending-progress').style.display = 'none';
+  document.getElementById('confirm-send-btn').disabled = false;
+  document.getElementById('confirm-send-btn').textContent = '✅ Confirm Send';
+  document.getElementById('send-progress-fill').style.width = '0%';
+}
+
+function closeModal() {
+  document.getElementById('send-modal').classList.remove('open');
+}
+
+function simulateSend() {
+  const btn = document.getElementById('confirm-send-btn');
+  btn.disabled = true;
+  btn.textContent = '📤 Sending...';
+  document.getElementById('sending-progress').style.display = 'block';
+
+  let progress = 0;
+  const total = 312;
+  const interval = setInterval(() => {
+    progress = Math.min(progress + Math.floor(Math.random() * 25) + 10, total);
+    const pct = Math.round((progress / total) * 100);
+    document.getElementById('send-progress-fill').style.width = pct + '%';
+    document.getElementById('send-progress-text').textContent = `${progress} / ${total} delivered`;
+    if (progress >= total) {
+      clearInterval(interval);
+      btn.textContent = '✅ All Sent!';
+      btn.style.background = 'var(--green)';
+      setTimeout(closeModal, 1500);
+    }
+  }, 120);
+}
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+window.onload = () => {
+  populateFarmers();
+  populateLedger();
+  populateDelivery();
+  updateForecastDisplay();
+  document.getElementById('zone-select').addEventListener('change', updateForecastDisplay);
+};
+</script>
+</body>
+</html>
