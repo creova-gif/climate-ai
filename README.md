@@ -10,7 +10,7 @@
 
 Climate AI is a dashboard-style web app with an advisory engine for sending guidance to farmers, a farmers-management view, a "Climate Ledger" for tracking climate-related records, and a strategic-plan view. This is the smallest and earliest-stage of CREOVA's prototype apps.
 
-[ADD SCREENSHOT HERE]
+![Climate AI dashboard](docs/screenshots/dashboard.png)
 
 ## Status: In active development (early stage)
 
